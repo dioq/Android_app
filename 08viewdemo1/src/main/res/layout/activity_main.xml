@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:text="http://www.baidu.com" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:autoLink="web"
+        android:background="#FFFF00"
+        android:gravity="right|bottom"
+        android:text="heheda 2"
+        android:textColor="#FF0000"
+        android:textSize="30sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="#0F0"
+        android:text="日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。清晨入古寺，初日照高林。曲径通幽处，禅房花木深。" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="#0FF"
+
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textIsSelectable="true"
+
+        android:text="日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。清晨入古寺，初日照高林。曲径通幽处，禅房花木深。"/>
+
+</LinearLayout>

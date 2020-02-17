@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".TwoActivity">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入电话号码"
+        android:textColorHint="#0F0"
+        android:inputType="phone" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="账号"
+        android:cursorVisible="true"
+        android:digits="qwertyuioplkjhgfdsazxcvbnm0987654321" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="密码"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="昵称"
+        android:inputType="text" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="工资"
+        android:inputType="number" />
+
+<!--    键盘完成按钮样式-->
+    <EditText
+        android:imeOptions="actionSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="演示信息"
+        android:inputType="text"/>
+
+    <!-- visibility 是否可见
+         lineSpacingExtra 行间距
+    -->
+    <TextView
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0F0"
+        android:lineSpacingExtra="15dp"
+        android:text="日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。清晨入古寺，初日照高林。曲径通幽处，禅房花木深。" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="你是谁?"
+        android:shadowDx="1"
+        android:shadowDy="2"
+        android:shadowRadius="5"
+        android:shadowColor="#F00"
+        android:maxLength="6" />
+
+</LinearLayout>

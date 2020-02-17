@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f00"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radioManId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男" />
+
+        <RadioButton
+            android:id="@+id/radioWomanId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="女" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/countryId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff0"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioChinaId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="中国" />
+
+        <RadioButton
+            android:id="@+id/radioAmericanId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="美国" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请选择你的爱好:" />
+
+    <CheckBox
+        android:id="@+id/eat_foodId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="吃饭" />
+
+    <CheckBox
+        android:id="@+id/drinkId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="喝酒" />
+
+    <CheckBox
+        android:id="@+id/playId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="玩游戏" />
+
+</LinearLayout>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff0">
+
+    <TextView
+        android:id="@+id/tv1"
+        android:background="#f00"
+        android:text="1号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:layout_toRightOf="@id/tv1"
+        android:background="#0f0"
+        android:text="2号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:layout_below="@+id/tv1"
+        android:background="#00f"
+        android:text="3号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:id="@+id/tv4"
+        android:layout_centerInParent="true"
+        android:background="#0ff"
+        android:text="4号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:background="#f0f"
+        android:text="5号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:background="#f0f"
+        android:text="6号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:layout_toRightOf="@id/tv4"
+        android:layout_centerVertical="true"
+        android:background="#84f"
+        android:text="7号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:layout_alignTop="@+id/tv4"
+        android:layout_alignLeft="@+id/tv4"
+        android:background="#842"
+        android:text="9号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
+    <TextView
+        android:layout_alignBottom="@+id/tv4"
+        android:layout_alignRight="@+id/tv4"
+        android:background="#04f"
+        android:text="10号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
+    <TextView
+        android:layout_below="@+id/tv4"
+        android:layout_alignRight="@+id/tv4"
+        android:background="#f40"
+        android:text="11号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
+    <TextView
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="#f40"
+        android:text="12号"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
+</RelativeLayout>
