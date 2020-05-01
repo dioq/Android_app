@@ -1,6 +1,4 @@
-package com.myself.learnservice;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.my.serviceforever;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,15 +8,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import static java.lang.Thread.sleep;
 
-/*
-至于startservice和bindservice的使用场景，有网友这么说：
-1.通过startservice开启的服务.一旦服务开启, 这个服务和开启他的调用者之间就没有任何的关系了. 调用者不可以访问 service里面的方法.
-调用者如果被系统回收了或者调用了ondestroy方法, service还会继续存在。
-2.通过bindService开启的服务,服务开启之后,调用者和服务之间 还存在着联系 , 一旦调用者挂掉了.service也会跟着挂掉。
-注意：bindServices一定要调用unbindServices方法，否则会抛出一个serviceConnection泄露异常
-* */
 public class MainActivity extends AppCompatActivity implements ServiceConnection {
 
     private Intent intent;
@@ -58,21 +51,15 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         System.out.println("服务绑定成功");
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.out.println(num + "号==任务==正在运行...");
-                    num++;
-                    try {
-                        sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+        while (true) {
+            System.out.println(num + "号==任务==正在运行...");
+            num++;
+            try {
+                sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        thread.start();
+        }
     }
 
     //服务被杀掉或服务崩溃时执行

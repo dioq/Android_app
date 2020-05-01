@@ -1,4 +1,4 @@
-package com.myself.learnservice;
+package com.my.serviceforever;
 
 import android.app.Service;
 import android.content.Intent;
@@ -56,5 +56,8 @@ public class MyService extends Service {
     public void onDestroy() {
         super.onDestroy();
         System.out.println("Service destory");
+
+        Intent intent = new Intent(this, MyReceiver.class);
+        sendBroadcast(intent);
     }
 }
