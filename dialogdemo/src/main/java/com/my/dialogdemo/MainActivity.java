@@ -54,6 +54,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        //如果想自定义三个按钮的对话框，可以把下面的方法注释打开
+        builder.setNeutralButton("第三个按钮",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // ...To-do
+                    }
+                });
         builder.show();
     }
 
@@ -125,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.setNegativeButton("取消", null);
+        //如果想自定义三个按钮的对话框，可以把下面的方法注释打开
+        builder.setNeutralButton("第三个按钮",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // ...To-do
+                    }
+                });
         builder.show();
     }
 
