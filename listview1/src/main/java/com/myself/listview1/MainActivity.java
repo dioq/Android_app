@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ public class MainActivity extends Activity {
         //1.获取ListView对象
         ListView listView = (ListView) findViewById(R.id.lv_main);
         //2.准备数据
-//        String[] data = {"初识Android", "开发环境搭建", "基础控件I", "基础控件II", "线性布局", "相对布局","初识Android", "开发环境搭建", "基础控件I", "基础控件II", "线性布局", "相对布局","初识Android", "开发环境搭建", "基础控件I", "基础控件II", "线性布局", "相对布局"};
         list = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < 30; i++) {
             Map<String, Object> map = new HashMap<String, Object>();
@@ -37,16 +35,11 @@ public class MainActivity extends Activity {
         }
 
         //3.准备适配器Adapter
-   /*     ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, //context 上下文
-                android.R.layout.simple_list_item_1, //行布局:系统自带的布局
-                data//数据源
-        );*/
         SimpleAdapter adapter = new SimpleAdapter(
                 this,
-                list,
-                R.layout.item,
-                new String[]{"logo", "title", "version", "size"},
+                list,//数据源
+                R.layout.item,//cell模板
+                new String[]{"logo", "title", "version", "size"},//上下两行: 模板 内容 和 vies'id 对应关系
                 new int[]{R.id.logoId, R.id.titleId, R.id.versionId, R.id.sizeId}
         );
         //4.将适配器关联到ListView
@@ -56,9 +49,9 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Map<String, Object> map = list.get(position);
+                Map<String, Object> map = list.get(position - 1);
                 String title = map.get("title").toString();
-                Toast.makeText(MainActivity.this,title,Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, title, Toast.LENGTH_SHORT).show();
             }
         });
     }
