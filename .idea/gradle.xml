@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/checkbox1" />
             <option value="$PROJECT_DIR$/checkbox2" />
             <option value="$PROJECT_DIR$/connectservice" />
+            <option value="$PROJECT_DIR$/deviceinfo" />
             <option value="$PROJECT_DIR$/dialogdemo" />
             <option value="$PROJECT_DIR$/handler1" />
             <option value="$PROJECT_DIR$/imageview1" />
@@ -28,6 +29,7 @@
             <option value="$PROJECT_DIR$/linearlayout2" />
             <option value="$PROJECT_DIR$/listview1" />
             <option value="$PROJECT_DIR$/listview2" />
+            <option value="$PROJECT_DIR$/listview3" />
             <option value="$PROJECT_DIR$/log_handler" />
             <option value="$PROJECT_DIR$/message" />
             <option value="$PROJECT_DIR$/network" />
