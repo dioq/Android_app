@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,15 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void post_request_func(View view) {
         String urlStr = "http://www.anant.club:10004/getPost";
-        Map<String, Object> paraMap = new HashMap<String, Object>();
-        paraMap.put("username", "Dio");
-        paraMap.put("password", "13131313");
-        paraMap.put("argot", "You are geat!");
-        paraMap.put("num", 1111);
-
-        JSONObject param_json = new JSONObject(paraMap);
-        String parmas = param_json.toString();
-        System.out.println(param_json.toString());
+        Map<String, Object> parmas = new HashMap<>();
+        parmas.put("username", "Dio");
+        parmas.put("password", "13131313");
+        parmas.put("argot", "You are geat!");
+        parmas.put("num", 1111);
 
         MyOkHttp.getInstance().requestPost(urlStr, parmas, new MyOkHttp.OkHttpCallBack<String>() {
             @Override

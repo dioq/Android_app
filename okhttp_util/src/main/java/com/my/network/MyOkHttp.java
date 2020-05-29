@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -77,13 +78,17 @@ public class MyOkHttp {
      * POST请求
      *
      * @param url            请求地址
-     * @param json           请求参数 json 格式
+     * @param params         请求参数 Map<String,String> 格式
      * @param okHttpCallBack 请求回调
      * @param clazz          返回结果的class
      * @param <T>            请求返回的类型
      */
-    public <T> void requestPost(@NotNull String url, @NotNull String json, @NotNull final OkHttpCallBack<T> okHttpCallBack,
+    public <T> void requestPost(@NotNull String url, @NotNull Map<String, Object> params, @NotNull final OkHttpCallBack<T> okHttpCallBack,
                                 @NotNull final Class<T> clazz) {
+        //获取到参数 params 类型为Map<String,String>,转化为发网络请求所需的JSON字符串格式
+        JSONObject param_json = new JSONObject(params);
+        String json = param_json.toString();
+
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(url)
@@ -117,13 +122,13 @@ public class MyOkHttp {
      * @param clazz          返回结果的Class
      * @param <T>            返回结果类型
      */
-    public <T> void submitFormdata(@NotNull String url, @NotNull Map<String,String> params, @NotNull final OkHttpCallBack<T> okHttpCallBack, @NotNull final Class<T> clazz) {
+    public <T> void submitFormdata(@NotNull String url, @NotNull Map<String, String> params, @NotNull final OkHttpCallBack<T> okHttpCallBack, @NotNull final Class<T> clazz) {
         //把传进来的Map<String,String> 类型 prams 参数 拼接到RequestBody body里
         FormBody.Builder builder = new FormBody.Builder();
         for (HashMap.Entry<String, String> entity : params.entrySet()) {
-            builder.add(entity.getKey(),entity.getValue());
+            builder.add(entity.getKey(), entity.getValue());
         }
-        RequestBody body =  builder.build();
+        RequestBody body = builder.build();
 
         final Request request = new Request.Builder()
                 .url(url)
