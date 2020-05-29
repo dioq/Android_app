@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="get_func"
+        android:text="GET" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="post_func"
+        android:text="POST" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="uploadImage_func"
+        android:text="上传图片" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+</LinearLayout>

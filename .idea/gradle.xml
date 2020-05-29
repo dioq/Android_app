@@ -32,8 +32,10 @@
             <option value="$PROJECT_DIR$/listview3" />
             <option value="$PROJECT_DIR$/log_handler" />
             <option value="$PROJECT_DIR$/message" />
-            <option value="$PROJECT_DIR$/network" />
-            <option value="$PROJECT_DIR$/okhttpdemo" />
+            <option value="$PROJECT_DIR$/network_native" />
+            <option value="$PROJECT_DIR$/okhttp1" />
+            <option value="$PROJECT_DIR$/okhttp_formdata" />
+            <option value="$PROJECT_DIR$/okhttp_util" />
             <option value="$PROJECT_DIR$/phone" />
             <option value="$PROJECT_DIR$/radio" />
             <option value="$PROJECT_DIR$/relativelayout1" />
