@@ -1,4 +1,4 @@
-package com.my.network_tool;
+package com.myself.network;
 
 import org.junit.Test;
 

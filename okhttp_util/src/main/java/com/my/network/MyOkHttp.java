@@ -1,4 +1,4 @@
-package com.my.network_tool;
+package com.my.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,10 +6,13 @@ import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -109,12 +112,19 @@ public class MyOkHttp {
      * POST提交Form-data表单
      *
      * @param url            请求地址
-     * @param body           请求参数 RequestBody 格式
+     * @param params         请求参数 Map<String,String> 类型
      * @param okHttpCallBack 请求回调
      * @param clazz          返回结果的Class
      * @param <T>            返回结果类型
      */
-    public <T> void submitFormdata(@NotNull String url, @NotNull RequestBody body, @NotNull final OkHttpCallBack<T> okHttpCallBack, @NotNull final Class<T> clazz) {
+    public <T> void submitFormdata(@NotNull String url, @NotNull Map<String,String> params, @NotNull final OkHttpCallBack<T> okHttpCallBack, @NotNull final Class<T> clazz) {
+        //把传进来的Map<String,String> 类型 prams 参数 拼接到RequestBody body里
+        FormBody.Builder builder = new FormBody.Builder();
+        for (HashMap.Entry<String, String> entity : params.entrySet()) {
+            builder.add(entity.getKey(),entity.getValue());
+        }
+        RequestBody body =  builder.build();
+
         final Request request = new Request.Builder()
                 .url(url)
                 .post(body)

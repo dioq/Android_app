@@ -1,4 +1,4 @@
-package com.my.network_tool;
+package com.my.network;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,9 +11,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,19 +71,13 @@ public class MainActivity extends AppCompatActivity {
     public void formdata_request_func(View view) {
         String url = "http://www.anant.club:10004/testFormdata";//接口地址
 
-        String username = "dio";
-        String area = "guiyang";
-        String age = "19";
-        String action = "this is a action";
+        Map<String, String> params = new HashMap<>();
+        params.put("username", "dio");
+        params.put("area", "guiyang");
+        params.put("age", "19");
+        params.put("action", "this is a action");
 
-        //表单数据参数填入
-        RequestBody body = new FormBody.Builder()
-                .add("username", username)
-                .add("area", area)
-                .add("age", age)
-                .add("action", action)
-                .build();
-        MyOkHttp.getInstance().submitFormdata(url, body, new MyOkHttp.OkHttpCallBack<String>() {
+        MyOkHttp.getInstance().submitFormdata(url, params, new MyOkHttp.OkHttpCallBack<String>() {
             @Override
             public void requestSuccess(String s) {
                 Log.e(TAG, "success:" + s);

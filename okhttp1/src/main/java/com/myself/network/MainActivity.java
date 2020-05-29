@@ -1,4 +1,4 @@
-package com.myself.okhttpdemo;
+package com.myself.network;
 
 import androidx.appcompat.app.AppCompatActivity;
 

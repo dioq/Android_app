@@ -1,4 +1,4 @@
-package com.myself.okhttpdemo;
+package com.my.network;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.myself.okhttpdemo", appContext.getPackageName());
+        assertEquals("com.my.network_tool", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package com.myself.okhttpdemo;
+package com.my.network;
 
 import org.junit.Test;
 

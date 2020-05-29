@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
