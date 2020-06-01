@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,7 +60,25 @@ public class MainActivity extends AppCompatActivity {
                 }
                 final String imgPath = new ImageUtil().getPathByImage("money.jpg");
                 Log.e(TAG, "imgPath:\n" + imgPath);
-                NetworkUtil.getInstance().uploadFile(imgPath, "http://103.100.211.187:10004/upload");
+                String response = NetworkUtil.getInstance().uploadFile(imgPath, "http://103.100.211.187:10004/upload");
+                showResponse(response);
+            }
+        }).start();
+    }
+
+    public void sumitFormdata_func(View view) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String url = "http://www.anant.club:10004/testFormdata";//接口地址
+
+                Map<String, String> params = new HashMap<>();
+                params.put("username", "dio");
+                params.put("area", "guiyang");
+                params.put("age", "19");
+                params.put("action", "this is a action");
+                String response = NetworkUtil.getInstance().submitFormdata(url, params);
+                showResponse(response);
             }
         }).start();
     }

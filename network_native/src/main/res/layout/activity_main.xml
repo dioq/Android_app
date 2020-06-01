@@ -10,19 +10,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="get_func"
-        android:text="GET" />
+        android:text="GET"
+        tools:ignore="OnClick" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="post_func"
-        android:text="POST" />
+        android:text="POST"
+        tools:ignore="OnClick" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="uploadImage_func"
-        android:text="上传图片" />
+        android:text="上传图片"
+        tools:ignore="OnClick" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="sumitFormdata_func"
+        android:text="Form-data个单"
+        tools:ignore="OnClick" />
 
     <ScrollView
         android:layout_width="match_parent"

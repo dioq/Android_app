@@ -10,9 +10,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class NetworkUtil {
@@ -76,17 +80,30 @@ public class NetworkUtil {
      *       业务成功  /业务失败
      * */
     public String doGet(String urlPath) {
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
         try {
             URL url = new URL(urlPath);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            if (conn.getResponseCode() == 200) {
-                InputStream is = conn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            if (connection.getResponseCode() == 200) {
+                InputStream is = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(is));
                 return reader.readLine();
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
     }
@@ -94,27 +111,41 @@ public class NetworkUtil {
     /*
      * 传入一个Url地址  返回一个JSON字符串
      * */
-    public String doPost(String urlPath, HashMap<String, String> paramsMap) {
+    public String doPost(String urlPath, Map<String, String> paramsMap) {
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
         try {
             URL url = new URL(urlPath);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
             //--------------------------------
-            conn.setDoOutput(true);
-            conn.getOutputStream().write(getParams(paramsMap).getBytes());
+            connection.setDoOutput(true);//是否写入参数
+            String paramLast = getParams(paramsMap);//拼接参数
+            connection.getOutputStream().write(paramLast.getBytes());
             //--------------------------------
-            if (conn.getResponseCode() == 200) {
-                InputStream is = conn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            if (connection.getResponseCode() == 200) {
+                InputStream is = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(is));
                 return reader.readLine();
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
     }
 
-    private static String getParams(HashMap<String, String> paramsMap) {
+    private String getParams(Map<String, String> paramsMap) {
         String result = "";
         for (HashMap.Entry<String, String> entity : paramsMap.entrySet()) {
             result += "&" + entity.getKey() + "=" + entity.getValue();
@@ -127,34 +158,36 @@ public class NetworkUtil {
      * @param filePath 要上传的文件绝对路径，如：e:/upload/SSD4k对齐分区.zip
      * @param urlStr   上传路径端口号和项目名称，如：http://192.168.1.209:9080/gjbmj
      */
-    public void uploadFile(String filePath, String urlStr) {
+    public String uploadFile(String filePath, String urlStr) {
         Log.e(TAG, "=========开始上传=============");
         String result = null;
         String uuid = UUID.randomUUID().toString();
         String BOUNDARY = uuid;
         String NewLine = "\r\n";
 
+        HttpURLConnection connection = null;
+        DataInputStream bis = null;
+        FileInputStream fis = null;
+        DataOutputStream bos = null;
         try {
             File file = new File(filePath);
             Log.e(TAG, " file = " + file.length());
             URL url = new URL(urlStr);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setChunkedStreamingMode(1024 * 1024);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("Charsert", "UTF-8");
-            conn.setConnectTimeout(50000);
-            conn.setRequestProperty("User-Agent", "Android Client Agent");
-            conn.setRequestProperty("Content-Type", "multipart/form-data; charset=utf-8; boundary=" + BOUNDARY);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setChunkedStreamingMode(1024 * 1024);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("Charsert", "UTF-8");
+            connection.setConnectTimeout(50000);
+            connection.setRequestProperty("User-Agent", "Android Client Agent");
+            connection.setRequestProperty("Content-Type", "multipart/form-data; charset=utf-8; boundary=" + BOUNDARY);
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
 
-            conn.setChunkedStreamingMode(1024 * 50);
-            conn.connect();
+            connection.setChunkedStreamingMode(1024 * 50);
+            connection.connect();
 
-            DataOutputStream bos = new DataOutputStream(conn.getOutputStream());
-            DataInputStream bis = null;
-            FileInputStream fis = null;
+            bos = new DataOutputStream(connection.getOutputStream());
             if (file.exists()) {
                 fis = new FileInputStream(file);
                 byte[] buff = new byte[1024];
@@ -179,10 +212,10 @@ public class NetworkUtil {
                 bos.write(NewLine.getBytes());
                 bos.flush();
             }
-            int res = conn.getResponseCode();
+            int res = connection.getResponseCode();
             Log.e(TAG, "res------------------>>" + res);
             if (res == 200) {
-                InputStream input = conn.getInputStream();
+                InputStream input = connection.getInputStream();
                 StringBuilder sbs = new StringBuilder();
                 int ss;
                 while ((ss = input.read()) != -1) {
@@ -190,16 +223,80 @@ public class NetworkUtil {
                 }
                 result = sbs.toString();
                 Log.e(TAG, "result------------------>>" + result);
+                return result;
             }
-            bis.close();
-            fis.close();
-            bos.close();
             Log.e(TAG, "=========上传完成=============");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                connection.disconnect();
+            }
             new File(filePath).delete();
         }
+        return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
+    }
+
+    //提交表单
+    public String submitFormdata(String urlPath, Map<String, String> paramsMap) {
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
+        try {
+            URL url = new URL(urlPath);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setUseCaches(false);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("Connection", "Keep-Alive");
+            connection.setRequestProperty("Charset", "UTF-8");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");//关键代码 application/x-www-form-urlencoded
+            //--------------------------------
+            connection.setDoOutput(true);//是否写入参数
+            String paramLast = getParams(paramsMap);
+            Log.w(TAG, "parmas:\n" + paramLast);
+            connection.getOutputStream().write(paramLast.getBytes());
+            //--------------------------------
+            if (connection.getResponseCode() == 200) {
+                InputStream is = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(is));
+                return reader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
     }
 
 }
