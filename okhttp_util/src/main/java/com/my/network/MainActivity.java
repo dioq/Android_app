@@ -3,12 +3,10 @@ package com.my.network;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void requestFailure(String s) {
-                Log.e(TAG, "fail:" + s);
+                Log.e(TAG, "failure:" + s);
                 showResponse(s);//更新ui
             }
         }, String.class);
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void post_request_func(View view) {
         String urlStr = "http://www.anant.club:10004/getPost";
-        Map<String, Object> parmas = new HashMap<>();
+        ArrayMap<String, Object> parmas = new ArrayMap<>();
         parmas.put("username", "Dio");
         parmas.put("password", "13131313");
         parmas.put("argot", "You are geat!");
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void requestFailure(String message) {
-                Log.e(TAG, "failre:" + message);
+                Log.e(TAG, "failure:" + message);
                 showResponse(message);//更新ui
             }
         }, String.class);
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     public void formdata_request_func(View view) {
         String url = "http://www.anant.club:10004/testFormdata";//接口地址
 
-        Map<String, String> params = new HashMap<>();
+        ArrayMap<String, String> params = new ArrayMap<>();
         params.put("username", "dio");
         params.put("area", "guiyang");
         params.put("age", "19");
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void requestFailure(String message) {
-                Log.e(TAG, "failre:" + message);
+                Log.e(TAG, "failure:" + message);
                 showResponse(message);//更新ui
             }
         }, String.class);

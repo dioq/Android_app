@@ -1,5 +1,6 @@
 package com.myself.network;
 
+import android.util.ArrayMap;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -10,13 +11,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class NetworkUtil {
@@ -111,7 +107,7 @@ public class NetworkUtil {
     /*
      * 传入一个Url地址  返回一个JSON字符串
      * */
-    public String doPost(String urlPath, Map<String, String> paramsMap) {
+    public String doPost(String urlPath, ArrayMap<String, String> paramsMap) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         try {
@@ -145,9 +141,9 @@ public class NetworkUtil {
         return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
     }
 
-    private String getParams(Map<String, String> paramsMap) {
+    private String getParams(ArrayMap<String, String> paramsMap) {
         String result = "";
-        for (HashMap.Entry<String, String> entity : paramsMap.entrySet()) {
+        for (ArrayMap.Entry<String, String> entity : paramsMap.entrySet()) {
             result += "&" + entity.getKey() + "=" + entity.getValue();
         }
         return result.substring(1);
@@ -259,7 +255,7 @@ public class NetworkUtil {
     }
 
     //提交表单
-    public String submitFormdata(String urlPath, Map<String, String> paramsMap) {
+    public String submitFormdata(String urlPath, ArrayMap<String, String> paramsMap) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         try {

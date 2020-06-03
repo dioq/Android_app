@@ -1,5 +1,7 @@
 package com.my.network;
 
+import android.util.ArrayMap;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -7,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -83,7 +83,7 @@ public class MyOkHttp {
      * @param clazz          返回结果的class
      * @param <T>            请求返回的类型
      */
-    public <T> void requestPost(@NotNull String url, @NotNull Map<String, Object> params, @NotNull final OkHttpCallBack<T> okHttpCallBack,
+    public <T> void requestPost(@NotNull String url, @NotNull ArrayMap<String, Object> params, @NotNull final OkHttpCallBack<T> okHttpCallBack,
                                 @NotNull final Class<T> clazz) {
         //获取到参数 params 类型为Map<String,String>,转化为发网络请求所需的JSON字符串格式
         JSONObject param_json = new JSONObject(params);
@@ -122,15 +122,15 @@ public class MyOkHttp {
      * @param clazz          返回结果的Class
      * @param <T>            返回结果类型
      */
-    public <T> void submitFormdata(@NotNull String url, @NotNull Map<String, String> params, @NotNull final OkHttpCallBack<T> okHttpCallBack, @NotNull final Class<T> clazz) {
+    public <T> void submitFormdata(@NotNull String url, @NotNull ArrayMap<String, String> params, @NotNull final OkHttpCallBack<T> okHttpCallBack, @NotNull final Class<T> clazz) {
         //把传进来的Map<String,String> 类型 prams 参数 拼接到RequestBody body里
         FormBody.Builder builder = new FormBody.Builder();
-        for (HashMap.Entry<String, String> entity : params.entrySet()) {
+        for (ArrayMap.Entry<String, String> entity : params.entrySet()) {
             builder.add(entity.getKey(), entity.getValue());
         }
         RequestBody body = builder.build();
 
-        final Request request = new Request.Builder()
+        Request request = new Request.Builder()
                 .url(url)
                 .post(body)
                 .build();
@@ -154,10 +154,8 @@ public class MyOkHttp {
     }
 
     private <T> void requestResult(String result, OkHttpCallBack<T> callBack, @NotNull Class<T> clazz) {
-
         if ("java.lang.String".equals(clazz.getName())) {
             callBack.requestSuccess((T) result);
-
         } else {
             Gson gson = new GsonBuilder().create();
             callBack.requestSuccess(gson.fromJson(result, clazz));
