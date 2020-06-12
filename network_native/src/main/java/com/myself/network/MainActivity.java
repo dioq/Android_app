@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {//只能在子线程中请求
             @Override
             public void run() {
-                String response = NetworkUtil.getInstance().doGet("http://www.anant.club:10004/getTest");
+                String response = NetworkUtil.getInstance().doGet("http://www.anant.club:8848/getTest");
                 showResponse(response);
             }
         }).start();
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void run() {
-                String urlStr = "http://www.anant.club:10004/getPost";
+                String urlStr = "http://www.anant.club:8848/getPost";
                 ArrayMap<String, String> paraMap = new ArrayMap<>();
                 paraMap.put("username", "Dio");
                 paraMap.put("password", "13131313");
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String imgPath = new ImageUtil().getPathByImage("money.jpg");
                 Log.e(TAG, "imgPath:\n" + imgPath);
-                String response = NetworkUtil.getInstance().uploadFile(imgPath, "http://103.100.211.187:10004/upload");
+                String response = NetworkUtil.getInstance().uploadFile(imgPath, "http://103.100.211.187:8848/upload");
                 showResponse(response);
             }
         }).start();
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void run() {
-                String url = "http://www.anant.club:10004/testFormdata";//接口地址
+                String url = "http://www.anant.club:8848/testFormdata";//接口地址
 
                 ArrayMap<String, String> params = new ArrayMap<>();
                 params.put("username", "dio");

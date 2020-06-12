@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void get_request_func(View view) {
-        MyOkHttp.getInstance().requestGet("http://www.anant.club:10004/getTest", new MyOkHttp.OkHttpCallBack<String>() {
+        MyOkHttp.getInstance().requestGet("http://www.anant.club:8848/getTest", new MyOkHttp.OkHttpCallBack<String>() {
 
             @Override
             public void requestSuccess(String s) {
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void post_request_func(View view) {
-        String urlStr = "http://www.anant.club:10004/getPost";
+        String urlStr = "http://www.anant.club:8848/getPost";
         ArrayMap<String, Object> parmas = new ArrayMap<>();
         parmas.put("username", "Dio");
         parmas.put("password", "13131313");
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void formdata_request_func(View view) {
-        String url = "http://www.anant.club:10004/testFormdata";//接口地址
+        String url = "http://www.anant.club:8848/testFormdata";//接口地址
 
         ArrayMap<String, String> params = new ArrayMap<>();
         params.put("username", "dio");

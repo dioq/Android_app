@@ -17,7 +17,7 @@ public class NetworkUtil {
     private static String TAG = "t1";
 
     public static void submitFormdata() {
-        String url = "http://www.anant.club:10004/testFormdata";//接口地址
+        String url = "http://www.anant.club:8848/testFormdata";//接口地址
 
         String username = "dio";
         String area = "guiyang";
