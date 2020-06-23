@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/connectservice" />
             <option value="$PROJECT_DIR$/deviceinfo" />
             <option value="$PROJECT_DIR$/dialogdemo" />
+            <option value="$PROJECT_DIR$/dynamic_load_dex" />
             <option value="$PROJECT_DIR$/handler1" />
             <option value="$PROJECT_DIR$/imageview1" />
             <option value="$PROJECT_DIR$/imageview2" />
@@ -43,6 +44,7 @@
             <option value="$PROJECT_DIR$/scaledpixels" />
             <option value="$PROJECT_DIR$/service1" />
             <option value="$PROJECT_DIR$/serviceforever" />
+            <option value="$PROJECT_DIR$/sharedpreferences1" />
             <option value="$PROJECT_DIR$/startservicefromanother" />
             <option value="$PROJECT_DIR$/tabdemo" />
             <option value="$PROJECT_DIR$/thread1" />
