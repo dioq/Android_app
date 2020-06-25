@@ -19,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
         参考资料：
         https://blog.csdn.net/a2923790861/article/details/80539862
         https://www.jianshu.com/p/edb809d84d26
+
+        //生成jar
+        .\gradlew makeJar
+        //将导出的ishowtoast.jar转换成Dalvik可识别的dex格式
+        E:\Android\Sdk\build-tools\29.0.3\.\dx.bat --dex --output=ishowtoast_dex.jar ishowtoast.jar
     * */
 
 
