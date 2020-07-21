@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        show_board = (TextView) findViewById(R.id.tvId);
+        show_board = findViewById(R.id.tvId);
     }
 
     public void get_func(View view) {
