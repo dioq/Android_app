@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void get_request_func(View view) {
-        MyOkHttp.getInstance().requestGet("http://www.anant.club:8848/getTest", new MyOkHttp.OkHttpCallBack<String>() {
+        MyOkHttp.getInstance().requestGet("http://103.100.211.187:8848/getTest", new MyOkHttp.OkHttpCallBack<String>() {
 
             @Override
             public void requestSuccess(String s) {
