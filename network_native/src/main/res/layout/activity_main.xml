@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="sumitFormdata_func"
-        android:text="Form-data个单"
+        android:text="Form-data表单"
         tools:ignore="OnClick" />
 
     <ScrollView

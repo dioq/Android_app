@@ -6,13 +6,17 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!--请求数据按钮-->
     <Button
-        android:id="@+id/send_request"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="post_func"
+        android:text="POST_request" />
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="request_func"
-        android:text="Send Request" />
+        android:text="GET_request" />
 
     <!--呈现内容-->
     <ScrollView
