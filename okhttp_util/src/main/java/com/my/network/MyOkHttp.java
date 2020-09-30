@@ -22,7 +22,7 @@ import okhttp3.Response;
 
 public class MyOkHttp {
 
-    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    private static final MediaType mediaType = MediaType.get("application/json; charset=utf-8");
     private static OkHttpClient client;
 
     private MyOkHttp() {
@@ -89,7 +89,42 @@ public class MyOkHttp {
         JSONObject param_json = new JSONObject(params);
         String json = param_json.toString();
 
-        RequestBody body = RequestBody.create(JSON, json);
+        RequestBody body = RequestBody.create(mediaType, json);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                okHttpCallBack.requestFailure(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    requestResult(response.body().string(), okHttpCallBack, clazz);
+                } else {
+                    okHttpCallBack.requestFailure(response.message());
+                }
+            }
+        });
+    }
+
+    /**
+     * POST请求 raw text原生格式
+     *
+     * @param url            请求地址
+     * @param params         请求参数 String 格式
+     * @param okHttpCallBack 请求回调
+     * @param clazz          返回结果的class
+     * @param <T>            请求返回的类型
+     */
+    public <T> void doPost(@NotNull String url, @NotNull String params, @NotNull final OkHttpCallBack<T> okHttpCallBack,
+                           @NotNull final Class<T> clazz) {
+        final MediaType mediaType = MediaType.get("application/x-www-form-urlencoded;charset=UTF-8");
+        RequestBody body = RequestBody.create(mediaType, params);
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)

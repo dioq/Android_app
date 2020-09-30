@@ -14,7 +14,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "t1";
-
     TextView show_board;
 
     @Override
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 String response = NetworkUtil.getInstance().doGet("http://www.anant.club:8848/getTest");
+                System.out.println("response:\n" + response);
                 showResponse(response);
             }
         }).start();
@@ -40,12 +40,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 String urlStr = "http://www.anant.club:8848/getPost";
-                ArrayMap<String, String> paraMap = new ArrayMap<>();
+                ArrayMap<String, Object> paraMap = new ArrayMap<>();
                 paraMap.put("username", "Dio");
                 paraMap.put("password", "13131313");
                 paraMap.put("argot", "You are geat!");
-                paraMap.put("num", "1111");
+                paraMap.put("num", 1111);
                 String response = NetworkUtil.getInstance().doPost(urlStr, paraMap);
+                System.out.println("response:\n" + response);
                 showResponse(response);
             }
         }).start();
@@ -73,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 String url = "http://www.anant.club:8848/testFormdata";//接口地址
-
                 ArrayMap<String, String> params = new ArrayMap<>();
                 params.put("username", "dio");
                 params.put("area", "guiyang");

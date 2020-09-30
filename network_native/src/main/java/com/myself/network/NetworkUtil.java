@@ -1,7 +1,12 @@
 package com.myself.network;
 
+import android.os.Build;
 import android.util.ArrayMap;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -72,6 +77,7 @@ public class NetworkUtil {
      * 传入一个Url地址  返回一个JSON字符串
      * 网络请求的情况分析:
      *   如果是404 500 ... 代表网络(Http协议)请求失败
+     *   400 参数格式不对
      *   200 服务器返回成功
      *       业务成功  /业务失败
      * */
@@ -81,11 +87,20 @@ public class NetworkUtil {
         try {
             URL url = new URL(urlPath);
             connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(8000);//连接最大时间
+            connection.setReadTimeout(8000);//读取最大时间
             connection.setRequestMethod("GET");
             if (connection.getResponseCode() == 200) {
-                InputStream is = connection.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(is));
-                return reader.readLine();
+                InputStream in = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(in));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                return response.toString();
+            } else {
+                return "http is failed. error code is " + connection.getResponseCode();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,22 +122,35 @@ public class NetworkUtil {
     /*
      * 传入一个Url地址  返回一个JSON字符串
      * */
-    public String doPost(String urlPath, ArrayMap<String, String> paramsMap) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public String doPost(String urlPath, ArrayMap<String, Object> paramsMap) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         try {
             URL url = new URL(urlPath);
             connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(8000);//连接最大时间
+            connection.setReadTimeout(8000);//读取最大时间
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.setRequestMethod("POST");
             //--------------------------------
             connection.setDoOutput(true);//是否写入参数
-            String paramLast = getParams(paramsMap);//拼接参数
-            connection.getOutputStream().write(paramLast.getBytes());
+            JSONObject param_json = new JSONObject(paramsMap);
+            String param_json_str = param_json.toString();//拼接参数
+            System.out.println("param_json_str:\n" + param_json_str);
+            connection.getOutputStream().write(param_json_str.getBytes());
             //--------------------------------
             if (connection.getResponseCode() == 200) {
-                InputStream is = connection.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(is));
-                return reader.readLine();
+                InputStream in = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(in));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                return response.toString();
+            } else {
+                return "http is failed. error code is " + connection.getResponseCode();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,14 +167,6 @@ public class NetworkUtil {
             }
         }
         return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
-    }
-
-    private String getParams(ArrayMap<String, String> paramsMap) {
-        String result = "";
-        for (ArrayMap.Entry<String, String> entity : paramsMap.entrySet()) {
-            result += "&" + entity.getKey() + "=" + entity.getValue();
-        }
-        return result.substring(1);
     }
 
 
@@ -295,4 +315,11 @@ public class NetworkUtil {
         return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
     }
 
+    private String getParams(ArrayMap<String, String> paramsMap) {
+        String result = "";
+        for (ArrayMap.Entry<String, String> entity : paramsMap.entrySet()) {
+            result += "&" + entity.getKey() + "=" + entity.getValue();
+        }
+        return result.substring(1);
+    }
 }
