@@ -137,7 +137,7 @@ public class NetworkUtil {
             connection.setDoOutput(true);//是否写入参数
             JSONObject param_json = new JSONObject(paramsMap);
             String param_json_str = param_json.toString();//拼接参数
-            System.out.println("param_json_str:\n" + param_json_str);
+//            System.out.println("param_json_str:\n" + param_json_str);
             connection.getOutputStream().write(param_json_str.getBytes());
             //--------------------------------
             if (connection.getResponseCode() == 200) {
@@ -239,9 +239,11 @@ public class NetworkUtil {
                 }
                 result = sbs.toString();
                 Log.e(TAG, "result------------------>>" + result);
+                Log.e(TAG, "=========上传完成=============");
                 return result;
+            } else {
+                return "http is failed. error code is " + res;
             }
-            Log.e(TAG, "=========上传完成=============");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -290,13 +292,21 @@ public class NetworkUtil {
             //--------------------------------
             connection.setDoOutput(true);//是否写入参数
             String paramLast = getParams(paramsMap);
-            Log.w(TAG, "parmas:\n" + paramLast);
+//            Log.w(TAG, "parmas:\n" + paramLast);
             connection.getOutputStream().write(paramLast.getBytes());
             //--------------------------------
             if (connection.getResponseCode() == 200) {
                 InputStream is = connection.getInputStream();
                 reader = new BufferedReader(new InputStreamReader(is));
-                return reader.readLine();
+//                return reader.readLine();
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                return response.toString();
+            } else {
+                return "http is failed. error code is " + connection.getResponseCode();
             }
         } catch (IOException e) {
             e.printStackTrace();
