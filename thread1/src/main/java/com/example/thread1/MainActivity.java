@@ -28,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             Thread t = new MyThread();
             t.start();
+
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//            }).start();
         }
     }
 
