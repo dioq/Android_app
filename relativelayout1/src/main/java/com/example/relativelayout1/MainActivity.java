@@ -1,4 +1,4 @@
- package com.example.relativelayout1;
+package com.example.relativelayout1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
