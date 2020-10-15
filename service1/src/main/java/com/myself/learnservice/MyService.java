@@ -2,8 +2,14 @@ package com.myself.learnservice;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
+
+import java.io.IOException;
 
 import static java.lang.Thread.sleep;
 
@@ -12,7 +18,8 @@ import static java.lang.Thread.sleep;
  * */
 public class MyService extends Service {
 
-    int num = 0;
+    static String TAG = "10001";
+    static int num = 0;
 
     public MyService() {
     }
@@ -25,7 +32,7 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("MyService -- onStartCommand");
+        Log.e(TAG, "MyService -- onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -33,13 +40,13 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        System.out.println("service 创建成功!");
+        Log.e(TAG, "service 创建成功!");
+//        MyPlayer.getInstance().play_music(this, "pinao.mp3");
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    System.out.println(num + "号==服务==正在运行...");
-                    num++;
+                    Log.e(TAG, "myservice target is go " + num++);
                     try {
                         sleep(2000);
                     } catch (InterruptedException e) {
@@ -55,6 +62,6 @@ public class MyService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        System.out.println("Service destory");
+        Log.e(TAG, "Service destory");
     }
 }

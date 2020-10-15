@@ -6,21 +6,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class Util {
 
     String loadFromSDFile(String fname) {
-        fname = "/" + fname;
         String result = null;
         try {
-            File f = new File(Environment.getExternalStorageDirectory().getPath() + fname);
-//            System.out.println(f.getAbsoluteFile());
+            File dataDir = Environment.getExternalStorageDirectory();
+            String path = dataDir.getPath() + "/" + fname;
+            File f = new File(path);
+            System.out.println(f.getAbsoluteFile());
+            if (!f.exists()) {
+                return null;
+            }
             int length = (int) f.length();
             byte[] buff = new byte[length];
             FileInputStream fin = new FileInputStream(f);
             fin.read(buff);
             fin.close();
-            result = new String(buff, "UTF-8");
+            result = new String(buff, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -28,10 +33,11 @@ public class Util {
     }
 
     void writeToSDFile(String content, String fname) {
-        fname = "/" + fname;
         try {
-            File f = new File(Environment.getExternalStorageDirectory().getPath() + fname);
-//            System.out.println(f1.getAbsoluteFile());
+            File dataDir = Environment.getExternalStorageDirectory();
+            String path = dataDir.getPath() + "/" + fname;
+            File f = new File(path);
+            System.out.println(f.getAbsoluteFile());
             if (!f.exists()) {
                 boolean isOr = f.createNewFile();
                 if (!isOr) {

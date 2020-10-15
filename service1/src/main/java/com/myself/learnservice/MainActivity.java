@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 
 import static java.lang.Thread.sleep;
@@ -21,6 +22,7 @@ import static java.lang.Thread.sleep;
 * */
 public class MainActivity extends AppCompatActivity implements ServiceConnection {
 
+    static String TAG = "10001";
     private Intent intent;
     int num = 0;
 
@@ -33,36 +35,38 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     //启动服务按钮的点击方法
     public void startFunc(View view) {
-        System.out.println("MainActivity -- onClick");
+        Log.e(TAG, "MainActivity ----> startFunc");
         //startService启动后 Service中的onStartCommand就会调用
         startService(intent);
     }
 
     //停止服务按钮的点击方法
     public void stopFunc(View view) {
+        Log.e(TAG, "MainActivity ---> stopFunc");
         stopService(intent);
     }
 
     //绑定服务的按钮方法
     public void bindFunc(View view) {
+        Log.e(TAG, "MainActivity ---> bindFunc");
         bindService(intent, this, Context.BIND_AUTO_CREATE);
     }
 
     //解除绑定服务的按钮方法
     public void unBindFunc(View view) {
+        Log.e(TAG, "MainActivity ---> unBindFunc\" + \"服务解除绑定执行");
         unbindService(this);
-        System.out.println("服务解除绑定执行");
     }
 
     //服务被绑定成功时执行
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-        System.out.println("服务绑定成功");
+        Log.e(TAG, "服务绑定成功");
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    System.out.println(num + "号==任务==正在运行...");
+                    Log.e(TAG, "onServiceConnected() ----> " + num + "号==任务==正在运行... ");
                     num++;
                     try {
                         sleep(2000);
@@ -78,6 +82,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     //服务被杀掉或服务崩溃时执行
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        System.out.println("服务被杀掉或服务崩溃");
+        Log.e(TAG, "服务被杀掉或服务崩溃");
     }
 }

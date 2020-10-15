@@ -3,8 +3,11 @@ package com.my.read_write_file;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.TextView;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,14 +22,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void read_txt(View view) {
-        String path = "Pictures/adc_code.txt";
+        String path = "token.txt";
         String result = util.loadFromSDFile(path);
         show_board.setText(result);
     }
 
     public void write_txt(View view) {
         String token = "13U1KJDKAHDU13891HQWEJQDALSDA";
-        String path = "Pictures/token.txt";
+        String path = "token.txt";
         util.writeToSDFile(token, path);
     }
 

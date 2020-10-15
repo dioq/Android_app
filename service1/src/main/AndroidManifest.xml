@@ -12,7 +12,8 @@
         <service
             android:name=".MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"
+            android:permission="TODO" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
