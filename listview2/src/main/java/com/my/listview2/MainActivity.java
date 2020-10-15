@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        show_board = (TextView) findViewById(R.id.show_board_id);
+        show_board = findViewById(R.id.show_board_id);
 
         //1.获取ListView对象
-        ListView listView = (ListView) findViewById(R.id.lv_main);
+        ListView listView = findViewById(R.id.lv_main);
         //2.准备数据
         final String[] data = {"hook MD5", "hook DES", "hook AES", "hook PBE", "hook RSA"};
         //3.准备适配器Adapter
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                ////重载该方法，在这个方法中，将每个Item的Gravity设置为CENTER
+                //重载该方法，在这个方法中，将每个Item的Gravity设置为CENTER
                 TextView textView = (TextView) super.getView(position, convertView, parent);
                 textView.setGravity(Gravity.CENTER);
                 return textView;

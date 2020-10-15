@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //1.获取ListView对象
-        ListView listView = (ListView) findViewById(R.id.lv_main);
+        ListView listView = findViewById(R.id.lv_main);
         //2.准备数据
         list = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < 30; i++) {

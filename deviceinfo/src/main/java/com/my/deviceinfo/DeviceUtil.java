@@ -193,7 +193,7 @@ public class DeviceUtil {
      * @param context
      * @return
      */
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "HardwareIds"})
     public String getIMEI(Context context) {
         if (!checkReadPhoneStatePermission(context)) {
             Log.w(TAG, "获取唯一设备号 IMEI : 无权限");
@@ -316,18 +316,10 @@ public class DeviceUtil {
                 return null;
             }
             Method method = bluetoothManagerService.getClass().getMethod("getAddress");
-            if (method != null) {
-                Object obj = method.invoke(bluetoothManagerService);
-                if (obj != null) {
-                    return obj.toString();
-                }
+            Object obj = method.invoke(bluetoothManagerService);
+            if (obj != null) {
+                return obj.toString();
             }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
