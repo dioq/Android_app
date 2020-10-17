@@ -8,9 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "t1";
@@ -20,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        show_board = (TextView) findViewById(R.id.tvId);
+        show_board = findViewById(R.id.tvId);
     }
 
     public void get_request_func(View view) {

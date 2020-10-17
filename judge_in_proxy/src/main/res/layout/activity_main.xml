@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+<!--    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="set_proxy"
+        android:text="设置代理(暂时无用)" />-->
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="judge_fun"
+        android:text="检测代理" />
+
+<!--    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="invalidate_proxy"
+        android:text="OkHttp走代理(手动)" />-->
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="doNetwork"
+        android:text="OKHttp发网络请求" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="do_native_network"
+        android:text="Native网络请求" />
+
+    <TextView
+        android:id="@+id/tex_id_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="显示内容...." />
+
+</LinearLayout>
