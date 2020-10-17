@@ -10,5 +10,6 @@ public class LayoutStudy extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.first_layout);
+//        setContentView(R.layout.activity_layout_study);
     }
 }
