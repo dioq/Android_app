@@ -11,16 +11,15 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button button;
     private Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button = (Button)findViewById(R.id.buttonId);
+        Button button = findViewById(R.id.buttonId);
         button.setOnClickListener(new ButtonListener());
-
         handler = new FirstHandler();
     }
 
