@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         stringSet.add("test2");
         editor.putStringSet("set", stringSet);
         //步骤4：提交
-        editor.commit();
+        editor.apply();
         Toast.makeText(this, "写入完成", Toast.LENGTH_LONG).show();
     }
 
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         //步骤2： 实例化SharedPreferences.Editor对象
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("name");
-        editor.commit();
+        editor.apply();
         Toast.makeText(this, "删除完成", Toast.LENGTH_LONG).show();
     }
 
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         //步骤2： 实例化SharedPreferences.Editor对象
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
         Toast.makeText(this, "清空完成", Toast.LENGTH_LONG).show();
     }
 

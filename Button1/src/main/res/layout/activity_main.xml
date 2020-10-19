@@ -11,14 +11,14 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FF0000"
         android:text="0"
-        android:textSize="80px"
-        android:background="#FF0000" />
+        android:textSize="80px" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="button"/>
+        android:text="button" />
 
 </LinearLayout>
