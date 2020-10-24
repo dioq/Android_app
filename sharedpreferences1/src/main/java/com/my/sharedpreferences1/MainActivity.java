@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean("boolean", true);
         editor.putFloat("float", 1.0f);
         editor.putInt("int", 1);
-        editor.putLong("long", 1l);
+        editor.putLong("long", 1L);
         editor.putString("string", "1");
         Set<String> stringSet = new HashSet<>();
         stringSet.add("test1");

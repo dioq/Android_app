@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         String http_host = props.getProperty("http.proxyHost");
         String http_port = props.getProperty("http.proxyPort");
         String text = http_host + " : " + http_port;
-        if (Check_VPN.isWifiProxy(this)) {
+        if (Check_Proxy.isWifiProxy()) {
             text += "\t\t代理上网";
         } else {
             text += "\t\t非代理上网";
