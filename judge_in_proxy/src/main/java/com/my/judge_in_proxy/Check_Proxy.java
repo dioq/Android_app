@@ -13,7 +13,7 @@ public class Check_Proxy {
     public static boolean isWifiProxy() {
         String host = System.getProperty("http.proxyHost");
         String port = System.getProperty("http.proxyPort");
-        Log.e(TAG, "代理  --->  " + host + ":" + port);
+        Log.e(TAG, "代理地址  --->  " + host + ":" + port);
         return !TextUtils.isEmpty(host) && !TextUtils.isEmpty(port);
     }
 }
