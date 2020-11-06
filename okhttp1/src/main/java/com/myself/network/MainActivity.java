@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void post_func(View view) {
         new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
+            @Override
+            public void run() {
+                try {
                     String urlStr = "http://www.anant.club:8848/getPost";
                     ArrayMap<String, Object> parmas = new ArrayMap<>();
                     parmas.put("username", "Dio");
