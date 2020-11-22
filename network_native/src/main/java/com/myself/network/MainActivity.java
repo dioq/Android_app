@@ -31,9 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void myRequetPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        } else {
-            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
+            String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
         }
     }
 
@@ -67,14 +66,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void uploadImage_func(View view) {
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
+            myRequetPermission();
+            return;
+        }
         new Thread(new Runnable() {//只能在子线程中请求
             @Override
             public void run() {
-                ImageUtil.checkAndGet_permission(MainActivity.this);
-                if (!ImageUtil.havePermissions) {
-                    Toast.makeText(MainActivity.this, "没有权限.请给权限", Toast.LENGTH_LONG).show();
-                    return;
-                }
                 String imgPath = new ImageUtil().getPathByImage("money.jpg");
                 Log.e(TAG, "imgPath:\n" + imgPath);
                 String response = NetworkUtil.getInstance().uploadFile(imgPath, "http://103.100.211.187:8848/upload");

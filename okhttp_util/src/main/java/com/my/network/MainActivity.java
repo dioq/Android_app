@@ -10,7 +10,6 @@ import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.my.network.util.ImageUtil;
 
@@ -26,14 +25,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         show_board = findViewById(R.id.tvId);
+        //进入app就获取 所有的权限
         myRequetPermission();
     }
 
     private void myRequetPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        } else {
-            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
+            String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
         }
     }
 
@@ -120,9 +119,8 @@ public class MainActivity extends AppCompatActivity {
 
     //上传图片
     public void upload_image(View view) {
-        ImageUtil.checkAndGet_permission(MainActivity.this);
-        if (!ImageUtil.havePermissions) {
-            Toast.makeText(MainActivity.this, "没有权限.请给权限", Toast.LENGTH_LONG).show();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
+            myRequetPermission();
             return;
         }
         String urlStr = "http://103.100.211.187:8848/upload";
