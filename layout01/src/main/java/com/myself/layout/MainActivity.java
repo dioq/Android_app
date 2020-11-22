@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.linearlayout0);
+        setContentView(R.layout.linearlayout3);
     }
 
     //util 里的 普通方法
