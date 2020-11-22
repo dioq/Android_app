@@ -1,4 +1,4 @@
-include ':listview1', ':imageview1', ':phone', ':message', ':log_handler', ':viewdemo1', ':tabdemo', ':viewdemo2', ':viewdemo3', ':activity1', ':button1', ':checkbox1', ':checkbox2', ':handler1', ':imageview2', ':layout01', ':radio', ':relativelayout1', ':scaledpixels', ':thread1', ':service1', ':broadcastreceiver1', ':network_native', ':okhttp1', ':broadcastreceiver2', ':dialogdemo'
+include ':listview1', ':imageview1', ':phone', ':message', ':log_handler', ':viewdemo1', ':tabdemo', ':viewdemo2', ':viewdemo3', ':activity1', ':button1', ':checkbox1', ':checkbox2', ':handler1', ':imageview2', ':layout01', ':radio', ':scaledpixels', ':thread1', ':service1', ':broadcastreceiver1', ':network_native', ':okhttp1', ':broadcastreceiver2', ':dialogdemo'
 rootProject.name='MyAndroid'
 include ':listview2'
 include ':listview3'
