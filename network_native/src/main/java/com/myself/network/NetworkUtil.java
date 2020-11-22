@@ -177,8 +177,7 @@ public class NetworkUtil {
     public String uploadFile(String filePath, String urlStr) {
         Log.e(TAG, "=========开始上传=============");
         String result = null;
-        String uuid = UUID.randomUUID().toString();
-        String BOUNDARY = uuid;
+        String BOUNDARY = UUID.randomUUID().toString().replace("-", "");
         String NewLine = "\r\n";
 
         HttpURLConnection connection = null;

@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +16,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -85,7 +87,7 @@ public class MyOkHttp {
      */
     public <T> void requestPost(@NotNull String url, @NotNull ArrayMap<String, Object> params, @NotNull final OkHttpCallBack<T> okHttpCallBack,
                                 @NotNull final Class<T> clazz) {
-        //获取到参数 params 类型为Map<String,String>,转化为发网络请求所需的JSON字符串格式
+        //获取到参数 params 类型为Map<String,Object>,转化为发网络请求所需的JSON字符串格式
         JSONObject param_json = new JSONObject(params);
         String json = param_json.toString();
 
@@ -123,8 +125,8 @@ public class MyOkHttp {
      */
     public <T> void doPost(@NotNull String url, @NotNull String params, @NotNull final OkHttpCallBack<T> okHttpCallBack,
                            @NotNull final Class<T> clazz) {
-        final MediaType mediaType = MediaType.get("application/x-www-form-urlencoded;charset=UTF-8");
-        RequestBody body = RequestBody.create(mediaType, params);
+        final MediaType mediaType_raw = MediaType.get("application/x-www-form-urlencoded;charset=UTF-8");
+        RequestBody body = RequestBody.create(mediaType_raw, params);
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
@@ -168,6 +170,56 @@ public class MyOkHttp {
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                okHttpCallBack.requestFailure(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    requestResult(response.body().string(), okHttpCallBack, clazz);
+                } else {
+                    okHttpCallBack.requestFailure(response.message());
+                }
+            }
+        });
+    }
+
+
+    /**
+     * POST 上传图片
+     *
+     * @param url            请求地址
+     * @param filePath       请求参数 图片路径
+     * @param okHttpCallBack 请求回调
+     * @param clazz          返回结果的Class
+     * @param <T>            返回结果类型
+     */
+    public <T> void uploadImage(@NotNull String url, @NotNull String filePath, @NotNull final OkHttpCallBack<T> okHttpCallBack,
+                                @NotNull final Class<T> clazz) {
+        File file = new File(filePath);
+
+        //1.创建对应的MediaType
+        final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+
+        //2.创建RequestBody
+        RequestBody fileBody = RequestBody.create(MEDIA_TYPE_PNG, file);
+
+        //3.构建MultipartBody
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", file.getName(), fileBody)
+                .build();
+
+        //4.构建请求
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {

@@ -1,16 +1,18 @@
-package com.my.linearlayout3;
+package com.myself.layout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
 
+import com.my.layout01.R;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.linearlayout_nest);
+        setContentView(R.layout.linearlayout0);
     }
 
     //util 里的 普通方法

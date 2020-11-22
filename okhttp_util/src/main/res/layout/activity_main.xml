@@ -30,6 +30,12 @@
         android:onClick="formdata_request_func"
         android:text="Post Formdata Request" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="upload_image"
+        android:text="上传图片" />
+
     <!--呈现内容-->
     <ScrollView
         android:layout_width="match_parent"

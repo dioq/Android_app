@@ -1,12 +1,20 @@
 package com.my.network;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.my.network.util.ImageUtil;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +26,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         show_board = findViewById(R.id.tvId);
+        myRequetPermission();
+    }
+
+    private void myRequetPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        } else {
+            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void get_request_func(View view) {
@@ -87,6 +104,30 @@ public class MainActivity extends AppCompatActivity {
         params.put("action", "this is a action");
 
         MyOkHttp.getInstance().submitFormdata(url, params, new MyOkHttp.OkHttpCallBack<String>() {
+            @Override
+            public void requestSuccess(String s) {
+                Log.e(TAG, "success:" + s);
+                showResponse(s);//更新ui
+            }
+
+            @Override
+            public void requestFailure(String message) {
+                Log.e(TAG, "failure:" + message);
+                showResponse(message);//更新ui
+            }
+        }, String.class);
+    }
+
+    //上传图片
+    public void upload_image(View view) {
+        ImageUtil.checkAndGet_permission(MainActivity.this);
+        if (!ImageUtil.havePermissions) {
+            Toast.makeText(MainActivity.this, "没有权限.请给权限", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String urlStr = "http://103.100.211.187:8848/upload";
+        String imgPath = new ImageUtil().getPathByImage("money.jpg");
+        MyOkHttp.getInstance().uploadImage(urlStr, imgPath, new MyOkHttp.OkHttpCallBack<String>() {
             @Override
             public void requestSuccess(String s) {
                 Log.e(TAG, "success:" + s);

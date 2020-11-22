@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     //重新设置OkHttp走代理(这种方法只能拿来作演示)
     public void invalidate_proxy(View view) {
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.1.7", 8888));
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("192.168.1.8", 8888));
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(60 * 1000, TimeUnit.MILLISECONDS);

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff0"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <!--  layout_weight : 按比例分配剩余空间。 对应的layout_width应设置为0,计算时好算一些,剩余空间就是屏幕宽度。
+            如果layout_width都设置成match_parent 则另外两个视图在屏幕外,剩余空间是负两倍的屏幕宽度    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal">
+
+        <!--   三个button平分 屏幕水平空间   -->
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:text="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:text="2" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:text="3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!--   layout_weight 占除60dp外的所有剩余空间     -->
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="hehehehe aaaaaaaaaaaa" />
+
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="100dp"
+            android:text="发送" />
+    </LinearLayout>
+
+</LinearLayout>
