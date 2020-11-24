@@ -2,19 +2,23 @@ package com.my.read_write_file;
 
 import android.os.Environment;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class Util {
+public class FileUtils {
 
+    //读取本地文本里的数据
     String loadFromSDFile(String fname) {
         String result = null;
         try {
             File dataDir = Environment.getExternalStorageDirectory();
-            String path = dataDir.getPath() + "/" + fname;
+            String path = dataDir.getPath() + File.separator + fname;
+            System.out.println("path : " + path);
             File f = new File(path);
             System.out.println(f.getAbsoluteFile());
             if (!f.exists()) {
@@ -32,10 +36,12 @@ public class Util {
         return result;
     }
 
-    void writeToSDFile(String content, String fname) {
+    //把string 写到本地文件里(会覆盖)
+    void write_to_localFile(String content, String fname) {
         try {
             File dataDir = Environment.getExternalStorageDirectory();
-            String path = dataDir.getPath() + "/" + fname;
+            String path = dataDir.getPath() + File.separator + fname;
+            System.out.println("path : " + path);
             File f = new File(path);
             System.out.println(f.getAbsoluteFile());
             if (!f.exists()) {
@@ -52,6 +58,26 @@ public class Util {
             // 关闭输出流
             fos.close();
             System.out.println("输入完成");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //把string 写到本地文件里(往尾部追加数据)
+    public void write_toEnd_localFile(String content, String fname) {
+        try {
+            File dataDir = Environment.getExternalStorageDirectory();
+            String path = dataDir.getPath() + File.separator + fname;
+            System.out.println("path : " + path);
+            File f = new File(path);
+            System.out.println("path : " + f.getAbsolutePath());
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            System.out.println(f.getAbsoluteFile());
+            BufferedWriter out = new BufferedWriter(new FileWriter(f, true));
+            out.write(content);
+            out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

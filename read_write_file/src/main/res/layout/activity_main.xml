@@ -10,15 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="read_txt"
-        android:text="read_txt"
-        tools:ignore="OnClick" />
+        android:text="读数据" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="write_txt"
-        android:text="write_txt"
-        tools:ignore="OnClick" />
+        android:text="往文件中写数据(覆盖)" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="write_txt_toEnd"
+        android:text="往文件中写数据(尾部追加)" />
 
     <ScrollView
         android:layout_width="match_parent"

@@ -6,44 +6,49 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.os.Bundle;
-import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.File;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView show_board;
-    Util util = new Util();
+    FileUtils fileUtils = null;
     public static final int PERMISSION_EXTERNAL_STORAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fileUtils = new FileUtils();
         show_board = findViewById(R.id.tvId);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_EXTERNAL_STORAGE);
-        } else {
-            Toast.makeText(this, "您已经申请了权限!", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void read_txt(View view) {
-        String path = "token.txt";
-        String result = util.loadFromSDFile(path);
+        String path = "Pictures/text_001.txt";
+        String result = fileUtils.loadFromSDFile(path);
         show_board.setText(result);
     }
 
     public void write_txt(View view) {
-        String token = "13U1KJDKAHDU13891HQWEJQDALSDA";
-        String path = "token.txt";
-        util.writeToSDFile(token, path);
+        System.out.println("------> 2 0");
+        System.out.println("------> 2");
+        String token = "13U1KJDKAHDU13891HQWEJQDALSDA==";
+        String path = "Pictures/text_001.txt";
+        fileUtils.write_to_localFile(token, path);
+    }
+
+    //往文件尾部追加数据
+    public void write_txt_toEnd(View view) {
+        String token = "13U1KJDKAHDU13891HQWEJQDALSDA==";
+        String path = "Pictures/text_001.txt";
+        fileUtils.write_toEnd_localFile(token, path);
     }
 
 }
