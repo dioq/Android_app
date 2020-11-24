@@ -192,7 +192,7 @@ public class NetworkUtil {
             connection.setChunkedStreamingMode(1024 * 1024);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("Charsert", "UTF-8");
+            connection.setRequestProperty("Charset", "UTF-8");
             connection.setConnectTimeout(50000);
             connection.setRequestProperty("User-Agent", "Android Client Agent");
             connection.setRequestProperty("Content-Type", "multipart/form-data; charset=utf-8; boundary=" + BOUNDARY);

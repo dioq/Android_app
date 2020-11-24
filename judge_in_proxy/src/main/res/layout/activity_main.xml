@@ -6,12 +6,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!--    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="set_proxy"
-            android:text="设置代理(暂时无用)" />-->
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

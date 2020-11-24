@@ -205,10 +205,10 @@ public class MyOkHttp {
         File file = new File(filePath);
 
         //1.创建对应的MediaType
-        final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+        final MediaType mediaType_image = MediaType.parse("image/*");
 
         //2.创建RequestBody
-        RequestBody fileBody = RequestBody.create(MEDIA_TYPE_PNG, file);
+        RequestBody fileBody = RequestBody.create(mediaType_image, file);
 
         //3.构建MultipartBody
         RequestBody requestBody = new MultipartBody.Builder()

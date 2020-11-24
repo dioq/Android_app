@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -24,34 +23,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.tex_id_1);
-
-        // 如果是本机自己测试,不需要代理请求,但发到服务器上的时候需要代理请求
-        // 对http开启全局代理
-        //System.setProperty("http.proxyHost", proxyHost);
-        //System.setProperty("http.proxyPort", proxyPort);
-        // 对https开启全局代理
-        //System.setProperty("https.proxyHost", proxyHost);
-        //System.setProperty("https.proxyPort", proxyPort);
-    }
-
-    //设置代理(目前这种方法基本无效)
-    public void set_proxy(View view) {
-        //通知Java您要通过代理进行连接
-        System.getProperties().put("proxySet", "true");
-        Properties props = System.getProperties();
-        //指定代理所在的服务器
-        props.put("http.proxyHost", "103.100.211.187");
-        //指定代理监听的端口
-        props.put("http.proxyPort", "8848");
     }
 
     //判断是否有代理
     public void judge_fun(View view) {
-        Properties props = System.getProperties();
-        String http_host = props.getProperty("http.proxyHost");
-        String http_port = props.getProperty("http.proxyPort");
+        String http_host = System.getProperty("http.proxyHost");
+        String http_port = System.getProperty("http.proxyPort");
         String text = http_host + " : " + http_port;
-        if (Check_Proxy.isWifiProxy()) {
+        if (CheckProxy.isWifiProxy()) {
             text += "\t\t代理上网";
         } else {
             text += "\t\t非代理上网";
