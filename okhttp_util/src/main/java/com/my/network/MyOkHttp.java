@@ -1,5 +1,6 @@
 package com.my.network;
 
+import android.app.Activity;
 import android.util.ArrayMap;
 
 import com.google.gson.Gson;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -203,7 +205,10 @@ public class MyOkHttp {
     public <T> void uploadImage(@NotNull String url, @NotNull String filePath, @NotNull final OkHttpCallBack<T> okHttpCallBack,
                                 @NotNull final Class<T> clazz) {
         File file = new File(filePath);
-
+        if (!file.exists()) {
+            System.out.println("所要上传的文件不存在,请认真检查!");
+            return;
+        }
         //1.创建对应的MediaType
         final MediaType mediaType_image = MediaType.parse("image/*");
 
@@ -211,9 +216,10 @@ public class MyOkHttp {
         RequestBody fileBody = RequestBody.create(mediaType_image, file);
 
         //3.构建MultipartBody
+        String name = "file";//后台服务器根据这个名取到Request
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("file", file.getName(), fileBody)
+                .addFormDataPart(name, file.getName(), fileBody)
                 .build();
 
         //4.构建请求
@@ -222,6 +228,54 @@ public class MyOkHttp {
                 .post(requestBody)
                 .build();
 
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                okHttpCallBack.requestFailure(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    requestResult(response.body().string(), okHttpCallBack, clazz);
+                } else {
+                    okHttpCallBack.requestFailure(response.message());
+                }
+            }
+        });
+    }
+
+
+    /**
+     * POST 上传二进制文件 Binary
+     *
+     * @param url            请求地址
+     * @param filePath       请求参数 二进制文件路径
+     * @param okHttpCallBack 请求回调
+     * @param clazz          返回结果的Class
+     * @param <T>            返回结果类型
+     */
+    public <T> void uploadBinary(@NotNull String url, @NotNull String filePath, @NotNull final OkHttpCallBack<T> okHttpCallBack,
+                                 @NotNull final Class<T> clazz) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            System.out.println("所要上传的文件不存在,请认真检查!");
+            return;
+        }
+        MediaType mediaType_binary = MediaType.parse("application/octet-stream; charset=utf-8");
+        FileInputStream fileInputStream = null;
+        try {
+            //把文件的二进制数据 读到输入流里
+            fileInputStream = new FileInputStream(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        RequestBody requestBody = RequestBodyUtil.create(mediaType_binary, fileInputStream);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

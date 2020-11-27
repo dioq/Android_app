@@ -36,6 +36,12 @@
         android:onClick="upload_image"
         android:text="上传图片" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="upload_binary"
+        android:text="上传二进制文件" />
+
     <!--呈现内容-->
     <ScrollView
         android:layout_width="match_parent"

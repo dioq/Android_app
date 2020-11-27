@@ -18,11 +18,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class NetworkUtil {
 
-    private static final String TAG = "t1";
+    private static final String TAG = "10001";
 
     //类初始化时，不初始化这个对象(延时加载，真正用的时候再创建)
     private static NetworkUtil instance;
@@ -122,7 +123,6 @@ public class NetworkUtil {
     /*
      * 传入一个Url地址  返回一个JSON字符串
      * */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public String doPost(String urlPath, ArrayMap<String, Object> paramsMap) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
@@ -171,11 +171,20 @@ public class NetworkUtil {
 
 
     /**
+     * POST 上传文件,如果文件是图片大多时候会有各种描述,二进制数据里掺杂有描述信息,需要用这个方法来上传。
+     *
      * @param filePath 要上传的文件绝对路径，如：e:/upload/SSD4k对齐分区.zip
      * @param urlStr   上传路径端口号和项目名称，如：http://192.168.1.209:9080/gjbmj
      */
     public String uploadFile(String filePath, String urlStr) {
-        Log.e(TAG, "=========开始上传=============");
+        Log.e(TAG, "============= 开始上传 =============");
+        File file = new File(filePath);
+        if (!file.exists()) {
+            System.out.println("待上传文件为空,请认真检查!");
+            return null;
+        }
+        Log.e(TAG, " file length = " + file.length());
+        Log.e(TAG, " file path = " + file.getAbsolutePath());
         String result = null;
         String BOUNDARY = UUID.randomUUID().toString().replace("-", "");
         String NewLine = "\r\n";
@@ -185,8 +194,6 @@ public class NetworkUtil {
         FileInputStream fis = null;
         DataOutputStream bos = null;
         try {
-            File file = new File(filePath);
-            Log.e(TAG, " file = " + file.length());
             URL url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();
             connection.setChunkedStreamingMode(1024 * 1024);
@@ -213,7 +220,8 @@ public class NetworkUtil {
                 //换行
                 bos.write(NewLine.getBytes());
                 //内容描述信息
-                String content = "Content-Disposition: form-data; name=file; filename=\"" + file.getName() + "\"";
+                String name = "file";//后台服务器根据这个名取到Request
+                String content = String.format("Content-Disposition: form-data; name=%s; filename=%s", name, file.getName());
                 bos.write(content.getBytes());
                 bos.write(NewLine.getBytes());
                 bos.write(NewLine.getBytes());
@@ -228,7 +236,7 @@ public class NetworkUtil {
                 bos.flush();
             }
             int res = connection.getResponseCode();
-            Log.e(TAG, "res------------------>>" + res);
+            Log.e(TAG, "response code : " + res);
             if (res == 200) {
                 InputStream input = connection.getInputStream();
                 StringBuilder sbs = new StringBuilder();
@@ -236,9 +244,9 @@ public class NetworkUtil {
                 while ((ss = input.read()) != -1) {
                     sbs.append((char) ss);
                 }
-                result = sbs.toString();
-                Log.e(TAG, "result------------------>>" + result);
-                Log.e(TAG, "=========上传完成=============");
+                //避免中文出现乱码
+                result = new String(sbs.toString().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+                Log.e(TAG, "response : \n" + result);
                 return result;
             } else {
                 return "http is failed. error code is " + res;
@@ -246,34 +254,116 @@ public class NetworkUtil {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (bis != null) {
-                try {
+            try {
+                if (bis != null) {
                     bis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
-            if (fis != null) {
-                try {
+                if (fis != null) {
                     fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
-            if (bos != null) {
-                try {
+                if (bos != null) {
                     bos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             if (connection != null) {
                 connection.disconnect();
             }
-            new File(filePath).delete();
         }
         return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
     }
+
+
+    /**
+     * POST 上传一个二进制文件,与上传图片的区别是不需要各种换行和描述。
+     * 如果是图片,上传的二进制数据全是图片信息,把这些二进制数据后缀改成jpg/png就能直接以图片形式显示出来
+     *
+     * @param filePath 要上传的文件绝对路径，如：e:/upload/SSD4k对齐分区.zip
+     * @param urlStr   上传路径端口号和项目名称，如：http://192.168.1.209:9080/gjbmj
+     */
+    public String uploadBinary(String filePath, String urlStr) {
+        Log.e(TAG, "=========开始上传=============");
+        File file = new File(filePath);
+        if (!file.exists()) {
+            System.out.println("待上传文件为空,请认真检查!");
+            return null;
+        }
+        Log.e(TAG, " file length = " + file.length());
+        Log.e(TAG, " file path = " + file.getAbsolutePath());
+
+        HttpURLConnection connection = null;
+        DataInputStream bis = null;
+        FileInputStream fis = null;
+        DataOutputStream bos = null;
+        String result = null;
+        try {
+            URL url = new URL(urlStr);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setChunkedStreamingMode(1024 * 1024);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("Charset", "UTF-8");
+            connection.setConnectTimeout(50000);
+            connection.setRequestProperty("User-Agent", "Android Client Agent");
+            connection.setRequestProperty("Content-Type", "multipart/form-data; charset=utf-8");
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+
+            connection.setChunkedStreamingMode(1024 * 50);
+            connection.connect();
+
+            bos = new DataOutputStream(connection.getOutputStream());
+            if (file.exists()) {
+                fis = new FileInputStream(file);
+                byte[] buff = new byte[1024];
+                bis = new DataInputStream(fis);
+                int cnt = 0;
+                //空一行后，开始通过流传输文件数据
+                while ((cnt = bis.read(buff)) != -1) {
+                    bos.write(buff, 0, cnt);
+                }
+                bos.flush();
+            }
+            int res = connection.getResponseCode();
+            Log.e(TAG, "response code : " + res);
+            if (res == 200) {
+                InputStream input = connection.getInputStream();
+                StringBuilder sbs = new StringBuilder();
+                int ss;
+                while ((ss = input.read()) != -1) {
+                    sbs.append((char) ss);
+                }
+                //避免中文出现乱码
+                result = new String(sbs.toString().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+                Log.e(TAG, "response : \n" + result);
+                return result;
+            } else {
+                return "http is failed. error code is " + res;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bis != null) {
+                    bis.close();
+                }
+                if (fis != null) {
+                    fis.close();
+                }
+                if (bos != null) {
+                    bos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
+    }
+
 
     //提交表单
     public String submitFormdata(String urlPath, ArrayMap<String, String> paramsMap) {
