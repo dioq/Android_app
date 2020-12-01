@@ -1,9 +1,7 @@
 package com.myself.network;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.view.View;
@@ -28,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.request_text);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     public void post_func(View view) {
         new Thread(new Runnable() {
             @Override
