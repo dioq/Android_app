@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.HashMap;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 String urlStr = "http://www.anant.club:8848/getPost";
-                ArrayMap<String, Object> paraMap = new ArrayMap<>();
+                HashMap<String, Object> paraMap = new HashMap<>();
                 paraMap.put("username", "Dio");
                 paraMap.put("password", "13131313");
                 paraMap.put("argot", "You are geat!");
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 String url = "http://www.anant.club:8848/testFormdata";//接口地址
-                ArrayMap<String, String> params = new ArrayMap<>();
+                HashMap<String, String> params = new HashMap<>();
                 params.put("username", "dio");
                 params.put("area", "guiyang");
                 params.put("age", "19");

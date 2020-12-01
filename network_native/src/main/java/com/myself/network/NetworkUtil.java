@@ -1,6 +1,5 @@
 package com.myself.network;
 
-import android.util.ArrayMap;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -16,6 +15,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class NetworkUtil {
@@ -120,7 +120,7 @@ public class NetworkUtil {
     /*
      * 传入一个Url地址  返回一个JSON字符串
      * */
-    public String doPost(String urlPath, ArrayMap<String, Object> paramsMap) {
+    public String doPost(String urlPath, HashMap<String, Object> paramsMap) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         try {
@@ -363,7 +363,7 @@ public class NetworkUtil {
 
 
     //提交表单
-    public String submitFormdata(String urlPath, ArrayMap<String, String> paramsMap) {
+    public String submitFormdata(String urlPath, HashMap<String, String> paramsMap) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         try {
@@ -411,9 +411,9 @@ public class NetworkUtil {
         return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
     }
 
-    private String getParams(ArrayMap<String, String> paramsMap) {
+    private String getParams(HashMap<String, String> paramsMap) {
         String result = "";
-        for (ArrayMap.Entry<String, String> entity : paramsMap.entrySet()) {
+        for (HashMap.Entry<String, String> entity : paramsMap.entrySet()) {
             result += "&" + entity.getKey() + "=" + entity.getValue();
         }
         return result.substring(1);
