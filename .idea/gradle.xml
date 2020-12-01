@@ -20,12 +20,10 @@
             <option value="$PROJECT_DIR$/deviceinfo" />
             <option value="$PROJECT_DIR$/dialogdemo" />
             <option value="$PROJECT_DIR$/dynamic_load_dex" />
-            <option value="$PROJECT_DIR$/dynamic_proxy" />
             <option value="$PROJECT_DIR$/handler1" />
             <option value="$PROJECT_DIR$/imageview1" />
             <option value="$PROJECT_DIR$/imageview2" />
             <option value="$PROJECT_DIR$/json_parse" />
-            <option value="$PROJECT_DIR$/judge_in_proxy" />
             <option value="$PROJECT_DIR$/judge_root" />
             <option value="$PROJECT_DIR$/layout01" />
             <option value="$PROJECT_DIR$/listview1" />
@@ -40,6 +38,8 @@
             <option value="$PROJECT_DIR$/permission01" />
             <option value="$PROJECT_DIR$/phone" />
             <option value="$PROJECT_DIR$/photograph" />
+            <option value="$PROJECT_DIR$/proxy_dynamic" />
+            <option value="$PROJECT_DIR$/proxy_local" />
             <option value="$PROJECT_DIR$/radio" />
             <option value="$PROJECT_DIR$/read_write_file" />
             <option value="$PROJECT_DIR$/retrofit_1" />

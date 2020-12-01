@@ -6,18 +6,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="显示内容..." />
-
-<!--    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="test_func"
-        android:text="test" />-->
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="replace_proxy"
-        android:text="点击更换代理" />
+        android:text="更换代理" />
 
     <Button
         android:layout_width="match_parent"
@@ -49,9 +37,10 @@
         android:text="测个网络请求"
         tools:ignore="OnClick" />
 
-    <WebView
-        android:id="@+id/webview_id"
+    <TextView
+        android:id="@+id/tvId"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:hint="显示内容..." />
 
 </LinearLayout>
