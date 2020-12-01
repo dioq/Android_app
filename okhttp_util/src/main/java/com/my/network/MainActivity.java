@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.my.network.util.ImageUtil;
 
 import java.io.File;
+import java.util.HashMap;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void post_request_func(View view) {
         String urlStr = "http://www.anant.club:8848/getPost";
-        ArrayMap<String, Object> parmas = new ArrayMap<>();
+        HashMap<String, Object> parmas = new HashMap<>();
         parmas.put("username", "Dio");
         parmas.put("password", "13131313");
         parmas.put("argot", "You are geat!");
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     public void formdata_request_func(View view) {
         String url = "http://www.anant.club:8848/testFormdata";//接口地址
 
-        ArrayMap<String, String> params = new ArrayMap<>();
+        HashMap<String, String> params = new HashMap<>();
         params.put("username", "dio");
         params.put("area", "guiyang");
         params.put("age", "19");

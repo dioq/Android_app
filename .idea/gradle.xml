@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/deviceinfo" />
             <option value="$PROJECT_DIR$/dialogdemo" />
             <option value="$PROJECT_DIR$/dynamic_load_dex" />
+            <option value="$PROJECT_DIR$/dynamic_proxy" />
             <option value="$PROJECT_DIR$/handler1" />
             <option value="$PROJECT_DIR$/imageview1" />
             <option value="$PROJECT_DIR$/imageview2" />
@@ -53,6 +54,7 @@
             <option value="$PROJECT_DIR$/viewdemo1" />
             <option value="$PROJECT_DIR$/viewdemo2" />
             <option value="$PROJECT_DIR$/viewdemo3" />
+            <option value="$PROJECT_DIR$/webview01" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

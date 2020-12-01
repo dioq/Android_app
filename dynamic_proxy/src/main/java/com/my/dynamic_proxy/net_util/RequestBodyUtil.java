@@ -1,4 +1,4 @@
-package com.my.network;
+package com.my.dynamic_proxy.net_util;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -1,10 +1,7 @@
 package com.myself.network;
 
-import android.os.Build;
 import android.util.ArrayMap;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import org.json.JSONObject;
 
