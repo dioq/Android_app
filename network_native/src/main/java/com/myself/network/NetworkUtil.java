@@ -1,9 +1,5 @@
 package com.myself.network;
 
-import android.util.Log;
-
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -12,15 +8,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class NetworkUtil {
-
-    private static final String TAG = "10001";
 
     //类初始化时，不初始化这个对象(延时加载，真正用的时候再创建)
     private static NetworkUtil instance;
@@ -37,94 +31,63 @@ public class NetworkUtil {
         return instance;
     }
 
-
-    public void sendGet(String urlStr) {
+    /**
+     * GET 请求
+     *
+     * @param urlStr 请求接口
+     */
+    public String doGet(String urlStr) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
+        String result = null;
         try {
-            URL url = new URL(urlStr);//新建URL
-            connection = (HttpURLConnection) url.openConnection();//发起网络请求
-            connection.setRequestMethod("GET");//请求方式
-            connection.setConnectTimeout(8000);//连接最大时间
-            connection.setReadTimeout(8000);//读取最大时间
-            InputStream in = connection.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(in));//写入reader
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            System.out.println(response.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
-
-    /*
-     * 传入一个Url地址  返回一个JSON字符串
-     * 网络请求的情况分析:
-     *   如果是404 500 ... 代表网络(Http协议)请求失败
-     *   400 参数格式不对
-     *   200 服务器返回成功
-     *       业务成功  /业务失败
-     * */
-    public String doGet(String urlPath) {
-        HttpURLConnection connection = null;
-        BufferedReader reader = null;
-        try {
-            URL url = new URL(urlPath);
+            URL url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(8000);//连接最大时间
             connection.setReadTimeout(8000);//读取最大时间
             connection.setRequestMethod("GET");
+            //处理返回信息
             if (connection.getResponseCode() == 200) {
-                InputStream in = connection.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(in));
+                InputStream in = connection.getInputStream(); //获取网络输入流 in
+                reader = new BufferedReader(new InputStreamReader(in)); //转换成BufferedReader
                 StringBuilder response = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
-                return response.toString();
+                result = response.toString();
             } else {
-                return "http is failed. error code is " + connection.getResponseCode();
+                result = "http is failed.  " + connection.getResponseMessage();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
-                try {
+            try {
+                if (reader != null) {
                     reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             if (connection != null) {
                 connection.disconnect();
             }
         }
-        return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
+        return result;
     }
 
-    /*
-     * 传入一个Url地址  返回一个JSON字符串
-     * */
-    public String doPost(String urlPath, HashMap<String, Object> paramsMap) {
+    /**
+     * POST 请求              application/json
+     *
+     * @param urlStr 请求接口
+     * @param param  参数
+     */
+    public String doPost(String urlStr, String param) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
+        String result = null;
         try {
-            URL url = new URL(urlPath);
+            URL url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(8000);//连接最大时间
             connection.setReadTimeout(8000);//读取最大时间
@@ -132,64 +95,63 @@ public class NetworkUtil {
             connection.setRequestMethod("POST");
             //--------------------------------
             connection.setDoOutput(true);//是否写入参数
-            JSONObject param_json = new JSONObject(paramsMap);
-            String param_json_str = param_json.toString();//拼接参数
-//            System.out.println("param_json_str:\n" + param_json_str);
-            connection.getOutputStream().write(param_json_str.getBytes());
+            OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(param.getBytes());//把参数的二进制格式 直接写入到网络输出流outputStream中
             //--------------------------------
+            //处理返回信息
             if (connection.getResponseCode() == 200) {
-                InputStream in = connection.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(in));
+                InputStream in = connection.getInputStream();//获取网络输入流 in
+                reader = new BufferedReader(new InputStreamReader(in)); //转换成BufferedReader
                 StringBuilder response = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
-                return response.toString();
+                result = response.toString();
             } else {
-                return "http is failed. error code is " + connection.getResponseCode();
+                result = "http is failed.  " + connection.getResponseMessage();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
-                try {
+            try {
+                if (reader != null) {
                     reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             if (connection != null) {
                 connection.disconnect();
             }
         }
-        return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
+        return result;
     }
 
-
     /**
-     * POST 上传文件,如果文件是图片大多时候会有各种描述,二进制数据里掺杂有描述信息,需要用这个方法来上传。
+     * POST 上传图片,如果文件是图片大多时候会有各种描述,二进制数据里掺杂有描述信息,需要用这个方法来上传。
      *
-     * @param filePath 要上传的文件绝对路径，如：e:/upload/SSD4k对齐分区.zip
-     * @param urlStr   上传路径端口号和项目名称，如：http://192.168.1.209:9080/gjbmj
+     * @param urlStr   上传接口
+     * @param filePath 要上传的文件路径
      */
-    public String uploadFile(String filePath, String urlStr) {
-        Log.e(TAG, "============= 开始上传 =============");
+    public String uploadImage(String urlStr, String filePath) {
+        System.out.println("============= 开始上传 =============");
         File file = new File(filePath);
         if (!file.exists()) {
             System.out.println("待上传文件为空,请认真检查!");
             return null;
         }
-        Log.e(TAG, " file length = " + file.length());
-        Log.e(TAG, " file path = " + file.getAbsolutePath());
+        System.out.println("file length = " + file.length());
+        System.out.println("file path = " + file.getAbsolutePath());
         String result = null;
         String BOUNDARY = UUID.randomUUID().toString().replace("-", "");
-        String NewLine = "\r\n";
+        String NewLine = "\r\n";//换行符
 
         HttpURLConnection connection = null;
-        DataInputStream bis = null;
-        FileInputStream fis = null;
         DataOutputStream bos = null;
+        FileInputStream fis = null;
+        DataInputStream bis = null;
+        BufferedReader reader = null;
         try {
             URL url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();
@@ -206,60 +168,59 @@ public class NetworkUtil {
             connection.setChunkedStreamingMode(1024 * 50);
             connection.connect();
 
-            bos = new DataOutputStream(connection.getOutputStream());
-            if (file.exists()) {
-                fis = new FileInputStream(file);
-                byte[] buff = new byte[1024];
-                bis = new DataInputStream(fis);
-                int cnt = 0;
-                //数据以--BOUNDARY开始
-                bos.write(("--" + BOUNDARY).getBytes());
-                //换行
-                bos.write(NewLine.getBytes());
-                //内容描述信息
-                String name = "file";//后台服务器根据这个名取到Request
-                String content = String.format("Content-Disposition: form-data; name=%s; filename=%s", name, file.getName());
-                bos.write(content.getBytes());
-                bos.write(NewLine.getBytes());
-                bos.write(NewLine.getBytes());
-                //空一行后，开始通过流传输文件数据
-                while ((cnt = bis.read(buff)) != -1) {
-                    bos.write(buff, 0, cnt);
-                }
-                bos.write(NewLine.getBytes());
-                //结束标志--BOUNDARY--
-                bos.write(("--" + BOUNDARY + "--").getBytes());
-                bos.write(NewLine.getBytes());
-                bos.flush();
+            bos = new DataOutputStream(connection.getOutputStream());//网络输出流
+            //---------------> 文件头描述信息
+            bos.write(("--" + BOUNDARY).getBytes());//数据以--BOUNDARY开始
+            bos.write(NewLine.getBytes());//换行
+            String name = "file";//后台服务器根据这个名取到Request
+            String content = String.format("Content-Disposition: form-data; name=%s; filename=%s", name, file.getName());
+            bos.write(content.getBytes());
+            bos.write(NewLine.getBytes());//换行
+            bos.write(NewLine.getBytes());//换行
+            //<--------------- 文件头描述信息
+            fis = new FileInputStream(file);//建立待上传的本地文件的输入流
+            bis = new DataInputStream(fis);//本地文件的输入流 转换成数据流
+            byte[] buff = new byte[1024];
+            int len = 0;
+            //读取本地文件数据流bis中的数据  写进网络输出流bos
+            while ((len = bis.read(buff)) != -1) {
+                bos.write(buff, 0, len);
             }
-            int res = connection.getResponseCode();
-            Log.e(TAG, "response code : " + res);
-            if (res == 200) {
-                InputStream input = connection.getInputStream();
-                StringBuilder sbs = new StringBuilder();
-                int ss;
-                while ((ss = input.read()) != -1) {
-                    sbs.append((char) ss);
+            //---------------> 文件尾描述信息
+            bos.write(NewLine.getBytes());//换行
+            bos.write(("--" + BOUNDARY + "--").getBytes());//结束标志--BOUNDARY--
+            bos.write(NewLine.getBytes());//换行
+            //<--------------- 文件尾描述信息
+            bos.flush();//把缓存在流中的数据刷出去(大部分情况下可以不要)
+
+            //处理上传完图片后的返回数据
+            if (connection.getResponseCode() == 200) {
+                InputStream in = connection.getInputStream();//获取网络输入流 in
+                reader = new BufferedReader(new InputStreamReader(in)); //转换成BufferedReader
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
                 }
-                //避免中文出现乱码
-                result = new String(sbs.toString().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
-                Log.e(TAG, "response : \n" + result);
-                return result;
+                result = response.toString();
             } else {
-                return "http is failed. error code is " + res;
+                result = "http is failed.  " + connection.getResponseMessage();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (bos != null) {
+                    bos.close();
+                }
                 if (bis != null) {
                     bis.close();
                 }
                 if (fis != null) {
                     fis.close();
-                }
-                if (bos != null) {
-                    bos.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -268,7 +229,8 @@ public class NetworkUtil {
                 connection.disconnect();
             }
         }
-        return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
+        System.out.println("============= 上传完成 =============");
+        return result;
     }
 
 
@@ -276,23 +238,24 @@ public class NetworkUtil {
      * POST 上传一个二进制文件,与上传图片的区别是不需要各种换行和描述。
      * 如果是图片,上传的二进制数据全是图片信息,把这些二进制数据后缀改成jpg/png就能直接以图片形式显示出来
      *
-     * @param filePath 要上传的文件绝对路径，如：e:/upload/SSD4k对齐分区.zip
-     * @param urlStr   上传路径端口号和项目名称，如：http://192.168.1.209:9080/gjbmj
+     * @param urlStr   上传接口
+     * @param filePath 要上传的文件路径
      */
-    public String uploadBinary(String filePath, String urlStr) {
-        Log.e(TAG, "=========开始上传=============");
+    public String uploadBinary(String urlStr, String filePath) {
+        System.out.println("=============开始上传=============");
         File file = new File(filePath);
         if (!file.exists()) {
             System.out.println("待上传文件为空,请认真检查!");
             return null;
         }
-        Log.e(TAG, " file length = " + file.length());
-        Log.e(TAG, " file path = " + file.getAbsolutePath());
+        System.out.println("file length = " + file.length());
+        System.out.println("file path = " + file.getAbsolutePath());
 
         HttpURLConnection connection = null;
-        DataInputStream bis = null;
-        FileInputStream fis = null;
         DataOutputStream bos = null;
+        FileInputStream fis = null;
+        DataInputStream bis = null;
+        BufferedReader reader = null;
         String result = null;
         try {
             URL url = new URL(urlStr);
@@ -310,46 +273,45 @@ public class NetworkUtil {
             connection.setChunkedStreamingMode(1024 * 50);
             connection.connect();
 
-            bos = new DataOutputStream(connection.getOutputStream());
-            if (file.exists()) {
-                fis = new FileInputStream(file);
-                byte[] buff = new byte[1024];
-                bis = new DataInputStream(fis);
-                int cnt = 0;
-                //空一行后，开始通过流传输文件数据
-                while ((cnt = bis.read(buff)) != -1) {
-                    bos.write(buff, 0, cnt);
-                }
-                bos.flush();
+            bos = new DataOutputStream(connection.getOutputStream());//网络输出流
+            fis = new FileInputStream(file);//建立待上传的本地文件的输入流
+            bis = new DataInputStream(fis);//本地文件的输入流 转换成数据流
+            byte[] buff = new byte[1024];
+            int len = 0;
+            //读取  本地文件数据流bis中的数据  写进网络输出流bos
+            while ((len = bis.read(buff)) != -1) {
+                bos.write(buff, 0, len);
             }
-            int res = connection.getResponseCode();
-            Log.e(TAG, "response code : " + res);
-            if (res == 200) {
-                InputStream input = connection.getInputStream();
-                StringBuilder sbs = new StringBuilder();
-                int ss;
-                while ((ss = input.read()) != -1) {
-                    sbs.append((char) ss);
+            bos.flush();//把缓存在流中的数据刷出去(大部分情况下可以不要)
+
+            //处理上传完文件后的返回数据
+            if (connection.getResponseCode() == 200) {
+                InputStream in = connection.getInputStream();//获取网络输入流 in
+                reader = new BufferedReader(new InputStreamReader(in)); //转换成BufferedReader
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
                 }
-                //避免中文出现乱码
-                result = new String(sbs.toString().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
-                Log.e(TAG, "response : \n" + result);
-                return result;
+                result = response.toString();
             } else {
-                return "http is failed. error code is " + res;
+                result = "http is failed.  " + connection.getResponseMessage();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
+                if (bos != null) {
+                    bos.close();
+                }
+                if (reader != null) {
+                    reader.close();
+                }
                 if (bis != null) {
                     bis.close();
                 }
                 if (fis != null) {
                     fis.close();
-                }
-                if (bos != null) {
-                    bos.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -358,59 +320,67 @@ public class NetworkUtil {
                 connection.disconnect();
             }
         }
-        return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
+        System.out.println("=============开始上传=============");
+        return result;
     }
 
 
-    //提交表单
-    public String submitFormdata(String urlPath, HashMap<String, String> paramsMap) {
+    /**
+     * POST  提交Form-data表单       application/x-www-form-urlencoded
+     *
+     * @param urlStr    请求接口
+     * @param paramsMap 参数
+     */
+    public String submitFormdata(String urlStr, HashMap<String, String> paramsMap) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
+        String result = null;
         try {
-            URL url = new URL(urlPath);
+            URL url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();
             connection.setUseCaches(false);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("accept", "*/*");
             connection.setRequestProperty("Connection", "Keep-Alive");
             connection.setRequestProperty("Charset", "UTF-8");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");//关键代码 application/x-www-form-urlencoded
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             //--------------------------------
             connection.setDoOutput(true);//是否写入参数
             String paramLast = getParams(paramsMap);
-//            Log.w(TAG, "parmas:\n" + paramLast);
+//            System.out.println("parmas:\n" + paramLast);
             connection.getOutputStream().write(paramLast.getBytes());
             //--------------------------------
+            //处理返回信息
             if (connection.getResponseCode() == 200) {
-                InputStream is = connection.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(is));
-//                return reader.readLine();
+                InputStream in = connection.getInputStream();//获取网络输入流 in
+                reader = new BufferedReader(new InputStreamReader(in)); //转换成BufferedReader
                 StringBuilder response = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
-                return response.toString();
+                result = response.toString();
             } else {
-                return "http is failed. error code is " + connection.getResponseCode();
+                result = "http is failed.  " + connection.getResponseMessage();
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
-                try {
+            try {
+                if (reader != null) {
                     reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             if (connection != null) {
                 connection.disconnect();
             }
         }
-        return "{ \"success\": false,\n   \"errorMsg\": \"后台服务器开小差了!\",\n     \"result\":{}}";
+        return result;
     }
 
+    //将参数 处理成form表单所需要的格式
     private String getParams(HashMap<String, String> paramsMap) {
         String result = "";
         for (HashMap.Entry<String, String> entity : paramsMap.entrySet()) {

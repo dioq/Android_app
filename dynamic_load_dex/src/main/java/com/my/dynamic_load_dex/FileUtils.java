@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * 将assets文件copy到app/data/cache目录
+ * 将assets里的文件copy到app/data/cache目录
  */
 public class FileUtils {
     public static void copyFiles(Context context, String fileName, File desFile) {

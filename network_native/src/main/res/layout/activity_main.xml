@@ -31,7 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="upload_binary"
-        android:text="上传二进制文件" />
+        android:text="上传二进制文件"
+        tools:ignore="OnClick" />
 
     <Button
         android:layout_width="match_parent"
