@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void sumitFormdata_func(View view) {
+    public void sumitForm_func(View view) {
         new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -126,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
                 params.put("area", "guiyang");
                 params.put("age", "19");
                 params.put("action", "this is a action");
-                String response = NetworkUtil.getInstance().submitFormdata(urlStr, params);
+                String requestData = NetworkUtil.getInstance().getParams(params);
+                System.out.println("requestData :\n" + requestData);
+                String response = NetworkUtil.getInstance().submitForm(urlStr, requestData);
                 System.out.println("response:\n" + response);
                 showResponse(response);
             }

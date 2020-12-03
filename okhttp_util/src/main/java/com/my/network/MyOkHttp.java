@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +23,6 @@ import okhttp3.Response;
 
 public class MyOkHttp {
 
-    private static final MediaType mediaType = MediaType.get("application/json; charset=utf-8");
     private static OkHttpClient client;
 
     private MyOkHttp() {
@@ -48,15 +46,15 @@ public class MyOkHttp {
     /**
      * GET请求
      *
-     * @param url            请求地址
+     * @param urlStr         请求地址
      * @param okHttpCallBack 请求回调
      * @param clazz          返回结果的Class
      * @param <T>            返回结果类型
      */
-    public <T> void requestGet(@NotNull String url, @NotNull final OkHttpCallBack<T> okHttpCallBack,
-                               @NotNull final Class<T> clazz) {
+    public <T> void doGet(@NotNull String urlStr, @NotNull final OkHttpCallBack<T> okHttpCallBack,
+                          @NotNull final Class<T> clazz) {
         Request request = new Request.Builder()
-                .url(url)
+                .url(urlStr)
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -76,24 +74,24 @@ public class MyOkHttp {
         });
     }
 
+
     /**
-     * POST请求
+     * POST请求               restful接口        application/json
      *
-     * @param url            请求地址
+     * @param urlStr         请求地址
      * @param params         请求参数 Map<String,String> 格式
      * @param okHttpCallBack 请求回调
      * @param clazz          返回结果的class
      * @param <T>            请求返回的类型
      */
-    public <T> void requestPost(@NotNull String url, @NotNull HashMap<String, Object> params, @NotNull final OkHttpCallBack<T> okHttpCallBack,
-                                @NotNull final Class<T> clazz) {
-        //获取到参数 params 类型为Map<String,Object>,转化为发网络请求所需的JSON字符串格式
-        JSONObject param_json = new JSONObject(params);
-        String json = param_json.toString();
+    public <T> void doPost(@NotNull String urlStr, @NotNull String params, @NotNull final OkHttpCallBack<T> okHttpCallBack,
+                           @NotNull final Class<T> clazz) {
+        //设置RequestBody的格式
+        final MediaType mediaType = MediaType.get("application/json; charset=utf-8");
 
-        RequestBody body = RequestBody.create(mediaType, json);
+        RequestBody body = RequestBody.create(mediaType, params);
         Request request = new Request.Builder()
-                .url(url)
+                .url(urlStr)
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -114,21 +112,22 @@ public class MyOkHttp {
         });
     }
 
+
     /**
-     * POST请求 raw text原生格式
+     * POST                 提交Form表单(参数是处理后的字符串)
      *
-     * @param url            请求地址
+     * @param urlStr         请求地址
      * @param params         请求参数 String 格式
      * @param okHttpCallBack 请求回调
      * @param clazz          返回结果的class
      * @param <T>            请求返回的类型
      */
-    public <T> void doPost(@NotNull String url, @NotNull String params, @NotNull final OkHttpCallBack<T> okHttpCallBack,
-                           @NotNull final Class<T> clazz) {
-        final MediaType mediaType_raw = MediaType.get("application/x-www-form-urlencoded;charset=UTF-8");
-        RequestBody body = RequestBody.create(mediaType_raw, params);
+    public <T> void submitForm(@NotNull String urlStr, @NotNull String params, @NotNull final OkHttpCallBack<T> okHttpCallBack,
+                               @NotNull final Class<T> clazz) {
+        final MediaType mediaType = MediaType.get("application/x-www-form-urlencoded;charset=UTF-8");
+        RequestBody body = RequestBody.create(mediaType, params);
         Request request = new Request.Builder()
-                .url(url)
+                .url(urlStr)
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {
@@ -149,18 +148,27 @@ public class MyOkHttp {
         });
     }
 
+    //将参数 处理成form表单能接收的格式
+    public String getParams(HashMap<String, String> paramsMap) {
+        String result = "";
+        for (HashMap.Entry<String, String> entity : paramsMap.entrySet()) {
+            result += "&" + entity.getKey() + "=" + entity.getValue();
+        }
+        return result.substring(1);
+    }
+
 
     /**
-     * POST提交Form-data表单
+     * POST                  提交Form表单(用OkHttp自带的FormBody.Builder来添加参数)
      *
-     * @param url            请求地址
+     * @param urlStr         请求地址
      * @param params         请求参数 Map<String,String> 类型
      * @param okHttpCallBack 请求回调
      * @param clazz          返回结果的Class
      * @param <T>            返回结果类型
      */
-    public <T> void submitFormdata(@NotNull String url, @NotNull HashMap<String, String> params, @NotNull final OkHttpCallBack<T> okHttpCallBack, @NotNull final Class<T> clazz) {
-        //把传进来的Map<String,String> 类型 prams 参数 拼接到RequestBody body里
+    public <T> void submitForm2(@NotNull String urlStr, @NotNull HashMap<String, String> params, @NotNull final OkHttpCallBack<T> okHttpCallBack, @NotNull final Class<T> clazz) {
+        //传进来的Map<String,String> 类型 prams 参数进行遍历 再 逐一添加到FormBody.Builder里 然后生成RequestBody
         FormBody.Builder builder = new FormBody.Builder();
         for (HashMap.Entry<String, String> entity : params.entrySet()) {
             builder.add(entity.getKey(), entity.getValue());
@@ -168,7 +176,7 @@ public class MyOkHttp {
         RequestBody body = builder.build();
 
         Request request = new Request.Builder()
-                .url(url)
+                .url(urlStr)
                 .post(body)
                 .build();
 
@@ -194,13 +202,13 @@ public class MyOkHttp {
     /**
      * POST 上传图片
      *
-     * @param url            请求地址
+     * @param urlStr         请求地址
      * @param filePath       请求参数 图片路径
      * @param okHttpCallBack 请求回调
      * @param clazz          返回结果的Class
      * @param <T>            返回结果类型
      */
-    public <T> void uploadImage(@NotNull String url, @NotNull String filePath, @NotNull final OkHttpCallBack<T> okHttpCallBack,
+    public <T> void uploadImage(@NotNull String urlStr, @NotNull String filePath, @NotNull final OkHttpCallBack<T> okHttpCallBack,
                                 @NotNull final Class<T> clazz) {
         File file = new File(filePath);
         if (!file.exists()) {
@@ -208,10 +216,10 @@ public class MyOkHttp {
             return;
         }
         //1.创建对应的MediaType
-        final MediaType mediaType_image = MediaType.parse("image/*");
+        final MediaType mediaType = MediaType.parse("image/*");
 
         //2.创建RequestBody
-        RequestBody fileBody = RequestBody.create(mediaType_image, file);
+        RequestBody fileBody = RequestBody.create(mediaType, file);
 
         //3.构建MultipartBody
         String name = "file";//后台服务器根据这个名取到Request
@@ -222,7 +230,7 @@ public class MyOkHttp {
 
         //4.构建请求
         Request request = new Request.Builder()
-                .url(url)
+                .url(urlStr)
                 .post(requestBody)
                 .build();
 
@@ -246,22 +254,22 @@ public class MyOkHttp {
 
 
     /**
-     * POST 上传二进制文件 Binary
+     * POST                  上传二进制文件 Binary
      *
-     * @param url            请求地址
+     * @param urlStr         请求地址
      * @param filePath       请求参数 二进制文件路径
      * @param okHttpCallBack 请求回调
      * @param clazz          返回结果的Class
      * @param <T>            返回结果类型
      */
-    public <T> void uploadBinary(@NotNull String url, @NotNull String filePath, @NotNull final OkHttpCallBack<T> okHttpCallBack,
+    public <T> void uploadBinary(@NotNull String urlStr, @NotNull String filePath, @NotNull final OkHttpCallBack<T> okHttpCallBack,
                                  @NotNull final Class<T> clazz) {
         File file = new File(filePath);
         if (!file.exists()) {
             System.out.println("所要上传的文件不存在,请认真检查!");
             return;
         }
-        MediaType mediaType_binary = MediaType.parse("application/octet-stream; charset=utf-8");
+        MediaType mediaType = MediaType.parse("application/octet-stream; charset=utf-8");
         FileInputStream fileInputStream = null;
         try {
             //把文件的二进制数据 读到输入流里
@@ -269,9 +277,9 @@ public class MyOkHttp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        RequestBody requestBody = RequestBodyUtil.create(mediaType_binary, fileInputStream);
+        RequestBody requestBody = RequestBodyUtil.create(mediaType, fileInputStream);
         Request request = new Request.Builder()
-                .url(url)
+                .url(urlStr)
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(new Callback() {

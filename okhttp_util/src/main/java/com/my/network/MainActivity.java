@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.my.network.util.ImageUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.HashMap;
 
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void get_request_func(View view) {
-        MyOkHttp.getInstance().requestGet("http://103.100.211.187:8848/getTest", new MyOkHttp.OkHttpCallBack<String>() {
+        MyOkHttp.getInstance().doGet("http://103.100.211.187:8848/getTest", new MyOkHttp.OkHttpCallBack<String>() {
 
             @Override
             public void requestSuccess(String s) {
@@ -59,13 +62,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void post_request_func(View view) {
         String urlStr = "http://www.anant.club:8848/getPost";
-        HashMap<String, Object> parmas = new HashMap<>();
-        parmas.put("username", "Dio");
-        parmas.put("password", "13131313");
-        parmas.put("argot", "You are geat!");
-        parmas.put("num", 1111);
-
-        MyOkHttp.getInstance().requestPost(urlStr, parmas, new MyOkHttp.OkHttpCallBack<String>() {
+        JSONObject parmas = new JSONObject();
+        try {
+            parmas.put("username", "Dio");
+            parmas.put("password", "13131313");
+            parmas.put("argot", "You are geat!");
+            parmas.put("num", 1111);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String requestData = parmas.toString();
+        System.out.println("requestData :\n" + requestData);
+        MyOkHttp.getInstance().doPost(urlStr, requestData, new MyOkHttp.OkHttpCallBack<String>() {
             @Override
             public void requestSuccess(String s) {
                 Log.e(TAG, "success:" + s);
@@ -80,10 +88,16 @@ public class MainActivity extends AppCompatActivity {
         }, String.class);
     }
 
-    public void post_raw_func(View view) {
-        String urlStr = "https://api.haipiaopiao.com/userHome/follow";
-        String requestData = "requestData=DoAY2D4a5cjX4mj6vpvavWNcg5oZWxjaEnUKIbx8Tq%2Fom8%2F4i81mv%2BNs%2BYfpZVknkY8w1rvcacRr%0AOVsaZyfLAfDaAqHRQOViAjDoRSd5FXuwhYL5Yd%2Fim2otx%2BsjXgQF239aEI8fJY4Bq6kG6SlaL9nd%0AK2qvMFwv4toPxFTuQpZoz1fGHRWXaogBkxqjYCMdBLHYvHnz5797yB2B%2F5fYKEbxBvBNljo%2FmVW5%0AARWkyR2IeR3WL0uc9nuIuUSkkSjC0LImkef6R9WQHcwdHnDqi%2BjClKb41XXtS9N6Nfd5OwH94hHv%0A93S4gE9Mz4QtxIVj7A5WFZRzdUhrs%2FkHIEsI7LD7TidiAWdB3vn8zNbI5uiEfoR%2FOl1VjyL4cDb0%0AY%2BFDARCjAn%2B0kSzR%2F34bKvcdL0vIksIRM7cWTX4W%2F%2B79Og4M0YP7VSb6hpVzxq0fU8pGgppdKleB%0AhJCHEjePJPfF4PaMZzBYuW35iQ2HWc6EWw5h8RB41YBnUqsX4e8LQJrnbAQQq2lq5%2B5NgkM3VXlh%0AmBMBRLL0FLgBUYt1XEmvXLua8b%2Fl4W3oDciXUGQLp5Ke4LEEllQTxDsZ1qd7F9c%2BJLZl4H3HOZzf%0Akp7rcAlQ%2BX36fbnsFCFrOtV5NlgNakvgDNVcII9oJIhSda2cyXufbFc6cOGr6Xr0EVGQVsRgg33P%0A58N9MU2kK%2FZ7PHbQ%2BM4D52DWNSXUvxH41HFsgMY0iOK%2FUt3PIj2l7JKqClXz7DPvfOwdta0dGEge%0ATwbe8XfvRQu1ZeyhbZUCgVmRXqGtytGB%2FZGZnhOU8wWV%2BuoFTmuBMEhRtvh6gLgeFYS8eXj5WFaX%0AO7mOjGugejnPEYehV%2B0k4RTwY4dUM3zzoNN7wRHKxmpW4AgWOTRtnYXrwp9dGvBQeHYQ1boHlLr9%0A8KJbNHz1BY9wDUYcXcojUHSrfB6tLDO12WpLIQJ3XmiUiahJIO3LlLQaYlblAUhUHzcgiQ%3D%3D%0A&i_type=1&app_type=1&access_token=62f85ab2da095d10edf445070698ed24&ctl=null&act=null";
-        MyOkHttp.getInstance().doPost(urlStr, requestData, new MyOkHttp.OkHttpCallBack<String>() {
+    public void submitform_func(View view) {
+        String urlStr = "http://www.anant.club:8848/testFormdata";
+        HashMap<String, String> params = new HashMap<>();
+        params.put("username", "dio");
+        params.put("area", "guiyang");
+        params.put("age", "19");
+        params.put("action", "this is a action");
+        String requestData = MyOkHttp.getInstance().getParams(params);
+        System.out.println("requestData :\n" + requestData);
+        MyOkHttp.getInstance().submitForm(urlStr, requestData, new MyOkHttp.OkHttpCallBack<String>() {
             @Override
             public void requestSuccess(String s) {
                 Log.e(TAG, "success:" + s);
@@ -97,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         }, String.class);
     }
 
-    public void formdata_request_func(View view) {
+    public void submitform2_func(View view) {
         String url = "http://www.anant.club:8848/testFormdata";//接口地址
 
         HashMap<String, String> params = new HashMap<>();
@@ -106,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         params.put("age", "19");
         params.put("action", "this is a action");
 
-        MyOkHttp.getInstance().submitFormdata(url, params, new MyOkHttp.OkHttpCallBack<String>() {
+        MyOkHttp.getInstance().submitForm2(url, params, new MyOkHttp.OkHttpCallBack<String>() {
             @Override
             public void requestSuccess(String s) {
                 Log.e(TAG, "success:" + s);

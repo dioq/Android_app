@@ -10,25 +10,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="get_request_func"
-        android:text="Get Request" />
+        android:text="Get" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="post_request_func"
-        android:text="Post Request" />
+        android:text="Post" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="post_raw_func"
-        android:text="Post raw Request" />
+        android:onClick="submitform_func"
+        android:text="提交Form表单" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="formdata_request_func"
-        android:text="Post Formdata Request" />
+        android:onClick="submitform2_func"
+        android:text="提交Form表单2" />
 
     <Button
         android:layout_width="match_parent"

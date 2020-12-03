@@ -1,4 +1,4 @@
-package com.my.judge_in_proxy;
+package com.my.dynamic_proxy.net_util;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 import java.util.HashMap;
@@ -17,19 +18,26 @@ import java.util.UUID;
 
 public class NetworkUtil {
 
-    //类初始化时，不初始化这个对象(延时加载，真正用的时候再创建)
-    private static NetworkUtil instance;
+    private int connectTimeout = 100 * 1000;
+    private int readTimeout = 100 * 1000;
 
-    //构造器私有化
-    private NetworkUtil() {
+    private Proxy proxy = null;
+
+    //不做任何设置,会走系统的代理
+    public NetworkUtil() {
     }
 
-    //方法同步，调用效率低
-    public static synchronized NetworkUtil getInstance() {
-        if (instance == null) {
-            instance = new NetworkUtil();
+    //传Proxy, 当传Proxy.NO_PROXY时不走任何代理包括系统的
+    public NetworkUtil(Proxy proxy) {
+        this.proxy = proxy;
+    }
+
+    //只传ip和port,只允许走指定代理地址
+    public NetworkUtil(String ip, String port) {
+        if (ip != null && port != null) {
+            int port2 = Integer.parseInt(port);
+            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port2));
         }
-        return instance;
     }
 
     /**
@@ -43,9 +51,13 @@ public class NetworkUtil {
         String result = null;
         try {
             URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);//发起网络请求,并且不走代理
-            connection.setConnectTimeout(8000);//连接最大时间
-            connection.setReadTimeout(8000);//读取最大时间
+            if (proxy != null) {//如果proxy不为空就设置proxy,否则不做处理
+                connection = (HttpURLConnection) url.openConnection(proxy);
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
+            connection.setConnectTimeout(connectTimeout);//连接最大时间
+            connection.setReadTimeout(readTimeout);//读取最大时间
             connection.setRequestMethod("GET");
             //处理返回信息
             if (connection.getResponseCode() == 200) {
@@ -78,7 +90,7 @@ public class NetworkUtil {
     }
 
     /**
-     * POST 请求              application/json
+     * POST           restful接口        application/json
      *
      * @param urlStr 请求接口
      * @param param  参数
@@ -89,9 +101,13 @@ public class NetworkUtil {
         String result = null;
         try {
             URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setConnectTimeout(8000);//连接最大时间
-            connection.setReadTimeout(8000);//读取最大时间
+            if (proxy != null) {//如果proxy不为空就设置proxy,否则不做处理
+                connection = (HttpURLConnection) url.openConnection(proxy);
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
+            connection.setConnectTimeout(connectTimeout);//连接最大时间
+            connection.setReadTimeout(readTimeout);//读取最大时间
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.setRequestMethod("POST");
             //--------------------------------
@@ -130,6 +146,73 @@ public class NetworkUtil {
     }
 
     /**
+     * POST   普通表单提交 application/x-www-form-urlencoded
+     *
+     * @param urlStr 请求接口
+     * @param param  参数
+     */
+    public String submitForm(String urlStr, String param) {
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
+        String result = null;
+        try {
+            URL url = new URL(urlStr);
+            if (proxy != null) {//如果proxy不为空就设置proxy,否则不做处理
+                connection = (HttpURLConnection) url.openConnection(proxy);
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
+            connection.setUseCaches(false);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("Connection", "Keep-Alive");
+            connection.setRequestProperty("Charset", "UTF-8");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            //--------------------------------
+            connection.setDoOutput(true);//是否写入参数
+            connection.getOutputStream().write(param.getBytes());
+            //--------------------------------
+            //处理返回信息
+            if (connection.getResponseCode() == 200) {
+                InputStream in = connection.getInputStream();//获取网络输入流 in
+                reader = new BufferedReader(new InputStreamReader(in)); //转换成BufferedReader
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                result = response.toString();
+            } else {
+                result = "http is failed.  " + connection.getResponseMessage();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return result;
+    }
+
+    //将参数 处理成form表单的特定格式
+    public String getParams(HashMap<String, String> paramsMap) {
+        String result = "";
+        for (HashMap.Entry<String, String> entity : paramsMap.entrySet()) {
+            result += "&" + entity.getKey() + "=" + entity.getValue();
+        }
+        return result.substring(1);
+    }
+
+
+    /**
      * POST 上传图片,如果文件是图片大多时候会有各种描述,二进制数据里掺杂有描述信息,需要用这个方法来上传。
      *
      * @param urlStr   上传接口
@@ -155,12 +238,16 @@ public class NetworkUtil {
         BufferedReader reader = null;
         try {
             URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
+            if (proxy != null) {//如果proxy不为空就设置proxy,否则不做处理
+                connection = (HttpURLConnection) url.openConnection(proxy);
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
             connection.setChunkedStreamingMode(1024 * 1024);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("connection", "Keep-Alive");
             connection.setRequestProperty("Charset", "UTF-8");
-            connection.setConnectTimeout(50000);
+            connection.setConnectTimeout(connectTimeout);
             connection.setRequestProperty("User-Agent", "Android Client Agent");
             connection.setRequestProperty("Content-Type", "multipart/form-data; charset=utf-8; boundary=" + BOUNDARY);
             connection.setDoOutput(true);
@@ -260,12 +347,16 @@ public class NetworkUtil {
         String result = null;
         try {
             URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
+            if (proxy != null) {//如果proxy不为空就设置proxy,否则不做处理
+                connection = (HttpURLConnection) url.openConnection(proxy);
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
             connection.setChunkedStreamingMode(1024 * 1024);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("connection", "Keep-Alive");
             connection.setRequestProperty("Charset", "UTF-8");
-            connection.setConnectTimeout(50000);
+            connection.setConnectTimeout(connectTimeout);
             connection.setRequestProperty("User-Agent", "Android Client Agent");
             connection.setRequestProperty("Content-Type", "multipart/form-data; charset=utf-8");
             connection.setDoOutput(true);
@@ -325,68 +416,4 @@ public class NetworkUtil {
         return result;
     }
 
-
-    /**
-     * POST  提交Form-data表单       application/x-www-form-urlencoded
-     *
-     * @param urlStr    请求接口
-     * @param paramsMap 参数
-     */
-    public String submitFormdata(String urlStr, HashMap<String, String> paramsMap) {
-        HttpURLConnection connection = null;
-        BufferedReader reader = null;
-        String result = null;
-        try {
-            URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setUseCaches(false);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("accept", "*/*");
-            connection.setRequestProperty("Connection", "Keep-Alive");
-            connection.setRequestProperty("Charset", "UTF-8");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            //--------------------------------
-            connection.setDoOutput(true);//是否写入参数
-            String paramLast = getParams(paramsMap);
-//            System.out.println("parmas:\n" + paramLast);
-            connection.getOutputStream().write(paramLast.getBytes());
-            //--------------------------------
-            //处理返回信息
-            if (connection.getResponseCode() == 200) {
-                InputStream in = connection.getInputStream();//获取网络输入流 in
-                reader = new BufferedReader(new InputStreamReader(in)); //转换成BufferedReader
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                result = response.toString();
-            } else {
-                result = "http is failed.  " + connection.getResponseMessage();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-        return result;
-    }
-
-    //将参数 处理成form表单所需要的格式
-    private String getParams(HashMap<String, String> paramsMap) {
-        String result = "";
-        for (HashMap.Entry<String, String> entity : paramsMap.entrySet()) {
-            result += "&" + entity.getKey() + "=" + entity.getValue();
-        }
-        return result.substring(1);
-    }
 }

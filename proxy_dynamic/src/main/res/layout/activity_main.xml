@@ -9,38 +9,98 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="get_current_proxy"
-        android:text="查看当前代理地址" />
+        android:onClick="get_system_proxy"
+        android:text="查看系统代理地址" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="get_internet_proxy"
-        android:text="ip111.cn查看当前代理地址" />
+        android:onClick="get_proxy_address"
+        android:text="获取代理地址" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="replace_proxy"
-        android:text="更换代理" />
+        android:text="更换系统代理" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="replace_proxy_dynamic"
-        android:text="动态更换代理" />
+        android:onClick="check_proxy_address"
+        android:text="检验系统代理是否更换成功" />
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="post_func"
-        android:text="测个网络请求"
-        tools:ignore="OnClick" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tvId"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="get_func"
+                android:text="网络请求(不做任何设置)"
+                tools:ignore="OnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="get_func2"
+                android:text="网络请求(不走一切代理)"
+                tools:ignore="OnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="post_func"
+                android:text="网络请求(走固定代理)"
+                tools:ignore="OnClick" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="post_func1"
+                android:text="网络请求1"
+                tools:ignore="OnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="post_func2"
+                android:text="网络请求2"
+                tools:ignore="OnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="post_func3"
+                android:text="网络请求3"
+                tools:ignore="OnClick" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--呈现内容-->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="显示内容..." />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
 
 </LinearLayout>

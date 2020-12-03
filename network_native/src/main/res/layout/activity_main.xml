@@ -23,6 +23,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="sumitForm_func"
+        android:text="提交form表单"
+        tools:ignore="OnClick" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="uploadImage_func"
         android:text="上传图片"
         tools:ignore="OnClick" />
@@ -34,12 +41,6 @@
         android:text="上传二进制文件"
         tools:ignore="OnClick" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="sumitFormdata_func"
-        android:text="Form-data表单"
-        tools:ignore="OnClick" />
 
     <ScrollView
         android:layout_width="match_parent"

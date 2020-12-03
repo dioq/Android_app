@@ -77,7 +77,7 @@ public class NetworkUtil {
     }
 
     /**
-     * POST 请求              application/json
+     * POST           restful接口        application/json
      *
      * @param urlStr 请求接口
      * @param param  参数
@@ -127,6 +127,69 @@ public class NetworkUtil {
         }
         return result;
     }
+
+    /**
+     * POST   普通表单提交 application/x-www-form-urlencoded
+     *
+     * @param urlStr 请求接口
+     * @param param  参数
+     */
+    public String submitForm(String urlStr, String param) {
+        HttpURLConnection connection = null;
+        BufferedReader reader = null;
+        String result = null;
+        try {
+            URL url = new URL(urlStr);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setUseCaches(false);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("Connection", "Keep-Alive");
+            connection.setRequestProperty("Charset", "UTF-8");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            //--------------------------------
+            connection.setDoOutput(true);//是否写入参数
+            connection.getOutputStream().write(param.getBytes());
+            //--------------------------------
+            //处理返回信息
+            if (connection.getResponseCode() == 200) {
+                InputStream in = connection.getInputStream();//获取网络输入流 in
+                reader = new BufferedReader(new InputStreamReader(in)); //转换成BufferedReader
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                result = response.toString();
+            } else {
+                result = "http is failed.  " + connection.getResponseMessage();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return result;
+    }
+
+    //将参数 处理成form表单的特定格式
+    public String getParams(HashMap<String, String> paramsMap) {
+        String result = "";
+        for (HashMap.Entry<String, String> entity : paramsMap.entrySet()) {
+            result += "&" + entity.getKey() + "=" + entity.getValue();
+        }
+        return result.substring(1);
+    }
+
 
     /**
      * POST 上传图片,如果文件是图片大多时候会有各种描述,二进制数据里掺杂有描述信息,需要用这个方法来上传。
@@ -324,68 +387,4 @@ public class NetworkUtil {
         return result;
     }
 
-
-    /**
-     * POST  提交Form-data表单       application/x-www-form-urlencoded
-     *
-     * @param urlStr    请求接口
-     * @param paramsMap 参数
-     */
-    public String submitFormdata(String urlStr, HashMap<String, String> paramsMap) {
-        HttpURLConnection connection = null;
-        BufferedReader reader = null;
-        String result = null;
-        try {
-            URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setUseCaches(false);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("accept", "*/*");
-            connection.setRequestProperty("Connection", "Keep-Alive");
-            connection.setRequestProperty("Charset", "UTF-8");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            //--------------------------------
-            connection.setDoOutput(true);//是否写入参数
-            String paramLast = getParams(paramsMap);
-//            System.out.println("parmas:\n" + paramLast);
-            connection.getOutputStream().write(paramLast.getBytes());
-            //--------------------------------
-            //处理返回信息
-            if (connection.getResponseCode() == 200) {
-                InputStream in = connection.getInputStream();//获取网络输入流 in
-                reader = new BufferedReader(new InputStreamReader(in)); //转换成BufferedReader
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                result = response.toString();
-            } else {
-                result = "http is failed.  " + connection.getResponseMessage();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-        return result;
-    }
-
-    //将参数 处理成form表单所需要的格式
-    private String getParams(HashMap<String, String> paramsMap) {
-        String result = "";
-        for (HashMap.Entry<String, String> entity : paramsMap.entrySet()) {
-            result += "&" + entity.getKey() + "=" + entity.getValue();
-        }
-        return result.substring(1);
-    }
 }
