@@ -41,6 +41,19 @@
         android:text="上传二进制文件"
         tools:ignore="OnClick" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="get_ssl_func"
+        android:text="GET SSL"
+        tools:ignore="OnClick" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="post_ssl_func"
+        android:text="POST SSL"
+        tools:ignore="OnClick" />
 
     <ScrollView
         android:layout_width="match_parent"
