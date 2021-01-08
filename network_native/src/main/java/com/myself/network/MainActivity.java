@@ -134,19 +134,19 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void get_ssl_func(View view) {
+    public void get_tls_func(View view) {
         new Thread(new Runnable() {//只能在子线程中请求
             @Override
             public void run() {
                 String urlStr = "https://www.anant.club:8081/getssl";
                 String response = NetworkSSLUtils.getInstance().doGet(urlStr, MainActivity.this);
-                System.out.println("get_ssl_func response:\n" + response);
+                System.out.println("get_tls_func response:\n" + response);
                 showResponse(response);
             }
         }).start();
     }
 
-    public void post_ssl_func(View view) {
+    public void post_tls_func(View view) {
         new Thread(new Runnable() {//开启线程
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String requestData = param_json.toString();
                 String response = NetworkSSLUtils.getInstance().doPost(urlStr, requestData, MainActivity.this);
-                System.out.println("post_ssl_func response:\n" + response);
+                System.out.println("post_tls_func response:\n" + response);
                 showResponse(response);
             }
         }).start();
