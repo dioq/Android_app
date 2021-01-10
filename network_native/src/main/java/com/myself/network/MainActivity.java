@@ -12,8 +12,6 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.TextView;
 
-import com.myself.network.util.ImageUtil;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,7 +29,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         show_board = findViewById(R.id.tvId);
-        myRequetPermission();
+        myRequetPermission();//给权限
+
+        //App一启动就配置https证书
+//        SSLConfig.trustAllSSL();//信任所有证书
+        SSLConfig.onlyTrustMe(this); // 只信任自己的服务器证书
     }
 
     private void myRequetPermission() {
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 String urlStr = "https://www.anant.club:8081/getssl";
-                String response = NetworkSSLUtils.getInstance().doGet(urlStr, MainActivity.this);
+                String response = NetworkUtil.getInstance().doGet(urlStr);
                 System.out.println("get_tls_func response:\n" + response);
                 showResponse(response);
             }
@@ -162,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 String requestData = param_json.toString();
-                String response = NetworkSSLUtils.getInstance().doPost(urlStr, requestData, MainActivity.this);
+                String response = NetworkUtil.getInstance().doPost(urlStr, requestData);
                 System.out.println("post_tls_func response:\n" + response);
                 showResponse(response);
             }

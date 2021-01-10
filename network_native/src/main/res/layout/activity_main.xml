@@ -6,54 +6,78 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="get_func"
-        android:text="GET"
-        tools:ignore="OnClick" />
+        android:orientation="horizontal">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="post_func"
-        android:text="POST"
-        tools:ignore="OnClick" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="sumitForm_func"
-        android:text="提交form表单"
-        tools:ignore="OnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="get_func"
+                android:text="GET"
+                tools:ignore="OnClick" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="uploadImage_func"
-        android:text="上传图片"
-        tools:ignore="OnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="post_func"
+                android:text="POST"
+                tools:ignore="OnClick" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="upload_binary"
-        android:text="上传二进制文件"
-        tools:ignore="OnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="sumitForm_func"
+                android:text="提交form表单"
+                tools:ignore="OnClick" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="get_tls_func"
-        android:text="GET TLS"
-        tools:ignore="OnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="uploadImage_func"
+                android:text="上传图片"
+                tools:ignore="OnClick" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="post_tls_func"
-        android:text="POST TLS"
-        tools:ignore="OnClick" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="upload_binary"
+                android:text="上传二进制文件"
+                tools:ignore="OnClick" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="get_tls_func"
+                android:text="GET TLS"
+                tools:ignore="OnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="post_tls_func"
+                android:text="POST TLS"
+                tools:ignore="OnClick" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"

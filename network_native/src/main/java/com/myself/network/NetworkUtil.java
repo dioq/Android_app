@@ -14,6 +14,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.UUID;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class NetworkUtil {
 
     //类初始化时，不初始化这个对象(延时加载，真正用的时候再创建)
@@ -42,7 +44,12 @@ public class NetworkUtil {
         String result = null;
         try {
             URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
+            if (url.getProtocol().toLowerCase().equals("https")) {//判断是http还是https
+                //https.setHostnameVerifier(DO_NOT_VERIFY); //不验证域名是否和证书域名相等
+                connection = (HttpsURLConnection) url.openConnection();
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
             connection.setConnectTimeout(8000);//连接最大时间
             connection.setReadTimeout(8000);//读取最大时间
             connection.setRequestMethod("GET");
@@ -88,7 +95,12 @@ public class NetworkUtil {
         String result = null;
         try {
             URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
+            if (url.getProtocol().toLowerCase().equals("https")) {//判断是http还是https
+                //https.setHostnameVerifier(DO_NOT_VERIFY); //不验证域名是否和证书域名相等
+                connection = (HttpsURLConnection) url.openConnection();
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
             connection.setConnectTimeout(8000);//连接最大时间
             connection.setReadTimeout(8000);//读取最大时间
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -140,7 +152,12 @@ public class NetworkUtil {
         String result = null;
         try {
             URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
+            if (url.getProtocol().toLowerCase().equals("https")) {//判断是http还是https
+                //https.setHostnameVerifier(DO_NOT_VERIFY); //不验证域名是否和证书域名相等
+                connection = (HttpsURLConnection) url.openConnection();
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
             connection.setUseCaches(false);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("accept", "*/*");
@@ -217,7 +234,12 @@ public class NetworkUtil {
         BufferedReader reader = null;
         try {
             URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
+            if (url.getProtocol().toLowerCase().equals("https")) {//判断是http还是https
+                //https.setHostnameVerifier(DO_NOT_VERIFY); //不验证域名是否和证书域名相等
+                connection = (HttpsURLConnection) url.openConnection();
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
             connection.setChunkedStreamingMode(1024 * 1024);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("connection", "Keep-Alive");
@@ -322,7 +344,12 @@ public class NetworkUtil {
         String result = null;
         try {
             URL url = new URL(urlStr);
-            connection = (HttpURLConnection) url.openConnection();
+            if (url.getProtocol().toLowerCase().equals("https")) {//判断是http还是https
+                //https.setHostnameVerifier(DO_NOT_VERIFY); //不验证域名是否和证书域名相等
+                connection = (HttpsURLConnection) url.openConnection();
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
             connection.setChunkedStreamingMode(1024 * 1024);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("connection", "Keep-Alive");
