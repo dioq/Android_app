@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
         myRequetPermission();//给权限
 
         //App一启动就配置https证书
-//        SSLConfig.trustAllSSL();//信任所有证书
-        SSLConfig.onlyTrustMe(this); // 只信任自己的服务器证书
+        SSLConfig.set(SSLWhichOne.JustTrustMe, this);
     }
 
     private void myRequetPermission() {

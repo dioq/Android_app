@@ -24,15 +24,30 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+enum SSLWhichOne {
+    TrustAll,//任信所有证书
+    JustTrustMe//只信任自己服务器的证书
+}
+
 public class SSLConfig {
 
     //服务器绑定的域名
     private static String host = "www.anant.club";
 
-    //设置https 信任所有服务器证书,只用设置一次。
-    public static void trustAllSSL() {
-        //设置证书
-        HttpsURLConnection.setDefaultSSLSocketFactory(getDefaultSSLSocketFactory());
+    public static void set(SSLWhichOne type, Activity activity) {
+        SSLSocketFactory sslSocketFactory = null;
+        switch (type) {
+            case TrustAll:
+                sslSocketFactory = getDefaultSSLSocketFactory();
+                break;
+            case JustTrustMe:
+                sslSocketFactory = getSSLContextFactory(activity);
+                break;
+        }
+
+        //将获取的 ssl 证书 配置到 HttpsURLConnection
+        HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
+        //验证域名
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession sslsession) {
@@ -69,33 +84,8 @@ public class SSLConfig {
         }
     }
 
-    /********************************************* 两种信任方式 **********************************************/
-
-    //设置https 只信任自己的服务器证书,只用设置一次。
-    public static void onlyTrustMe(Activity activity) {
-        //SSLContext 初始化
-        SSLContext sslContext = getSSLContext(activity);
-        assert sslContext != null;
-        HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession sslsession) {
-                if (host.equals(hostname)) {//判断域名是否和证书域名相等(不需要验证可以关掉)
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-    }
-
-    /**
-     * 获取Https的证书
-     *
-     * @param context Activity（fragment）的上下文
-     * @return SSL的上下文对象
-     */
-    private static SSLContext getSSLContext(Context context) {
+    // 信任自己放在本地的证书
+    private static synchronized SSLSocketFactory getSSLContextFactory(Context context) {
         SSLContext s_sSLContext = null;
         CertificateFactory certificateFactory = null;
         InputStream inputStream = null;
@@ -120,7 +110,7 @@ public class SSLConfig {
             // Create an SSLContext that uses our TrustManager
             s_sSLContext = SSLContext.getInstance("TLS");
             s_sSLContext.init(null, trustManagerFactory.getTrustManagers(), null);
-            return s_sSLContext;
+            return s_sSLContext.getSocketFactory();
         } catch (CertificateException | KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
             e.printStackTrace();
         }
