@@ -240,7 +240,7 @@ public class NetworkUtil {
             } else {
                 connection = (HttpURLConnection) url.openConnection();
             }
-            connection.setChunkedStreamingMode(1024 * 1024);
+
             connection.setRequestMethod("POST");
             connection.setRequestProperty("connection", "Keep-Alive");
             connection.setRequestProperty("Charset", "UTF-8");
@@ -249,7 +249,6 @@ public class NetworkUtil {
             connection.setRequestProperty("Content-Type", "multipart/form-data; charset=utf-8; boundary=" + BOUNDARY);
             connection.setDoOutput(true);
             connection.setDoInput(true);
-
             connection.setChunkedStreamingMode(1024 * 50);
             connection.connect();
 
@@ -359,8 +358,6 @@ public class NetworkUtil {
             connection.setRequestProperty("Content-Type", "multipart/form-data; charset=utf-8");
             connection.setDoOutput(true);
             connection.setDoInput(true);
-
-            connection.setChunkedStreamingMode(1024 * 50);
             connection.connect();
 
             bos = new DataOutputStream(connection.getOutputStream());//网络输出流

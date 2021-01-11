@@ -45,7 +45,7 @@ public class SSLConfig {
                 break;
         }
 
-        //将获取的 ssl 证书 配置到 HttpsURLConnection
+        //将证书工厂 配置到 HttpsURLConnection
         HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
         //验证域名
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
@@ -80,41 +80,33 @@ public class SSLConfig {
             }, null);
             return sslContext.getSocketFactory();
         } catch (GeneralSecurityException e) {
+            e.printStackTrace();
             throw new AssertionError();
         }
     }
 
     // 信任自己放在本地的证书
     private static synchronized SSLSocketFactory getSSLContextFactory(Context context) {
-        SSLContext s_sSLContext = null;
-        CertificateFactory certificateFactory = null;
-        InputStream inputStream = null;
-        KeyStore keystore = null;
-        String tmfAlgorithm = null;
-        TrustManagerFactory trustManagerFactory = null;
         try {
-            certificateFactory = CertificateFactory.getInstance("X.509");
-
-            inputStream = context.getAssets().open("cert.pem");//这里导入SSL证书文件
-
+            // 生成 TrustManagerFactory
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            InputStream inputStream = context.getAssets().open("cert.pem");//这里导入SSL证书文件
             Certificate ca = certificateFactory.generateCertificate(inputStream);
-
-            keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+            KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
             keystore.load(null, null);
             keystore.setCertificateEntry("ca", ca);
-
-            tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-            trustManagerFactory = TrustManagerFactory.getInstance(tmfAlgorithm);
+            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(tmfAlgorithm);
             trustManagerFactory.init(keystore);
 
             // Create an SSLContext that uses our TrustManager
-            s_sSLContext = SSLContext.getInstance("TLS");
+            SSLContext s_sSLContext = SSLContext.getInstance("TLS");
             s_sSLContext.init(null, trustManagerFactory.getTrustManagers(), null);
             return s_sSLContext.getSocketFactory();
-        } catch (CertificateException | KeyManagementException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
+        } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException | CertificateException | IOException e) {
             e.printStackTrace();
+            throw new AssertionError();
         }
-        return null;
     }
 
 }
