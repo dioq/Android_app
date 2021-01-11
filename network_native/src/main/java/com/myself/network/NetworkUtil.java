@@ -12,6 +12,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -55,6 +57,10 @@ public class NetworkUtil {
             connection.setRequestMethod("GET");
             //处理返回信息
             if (connection.getResponseCode() == 200) {
+                //返回的 header 信息(一般用不上)
+//            Map<String, List<String>> header = connection.getHeaderFields();
+//            System.out.println(header.toString());
+                //返回的 body 内容
                 InputStream in = connection.getInputStream(); //获取网络输入流 in
                 reader = new BufferedReader(new InputStreamReader(in)); //转换成BufferedReader
                 StringBuilder response = new StringBuilder();
