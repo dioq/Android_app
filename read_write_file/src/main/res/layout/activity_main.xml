@@ -24,6 +24,12 @@
         android:onClick="write_txt_toEnd"
         android:text="往文件中写数据(尾部追加)" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="read_selected_line"
+        android:text="读取文件中指定的行数" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

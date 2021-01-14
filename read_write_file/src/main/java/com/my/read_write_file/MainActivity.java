@@ -51,4 +51,12 @@ public class MainActivity extends AppCompatActivity {
         fileUtils.write_toEnd_localFile(token, path);
     }
 
+    public void read_selected_line(View view) {
+        String path = "Pictures/latlon.txt";
+        int totalNum = fileUtils.getTotalLines(path);
+        System.out.println("totalNum : " + totalNum);
+        //读取最后一行(读第一行 传1 而不是0)
+        String line = fileUtils.readLineByIndex(path, totalNum);
+        System.out.println("line : " + line);
+    }
 }
