@@ -12,8 +12,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -70,7 +68,7 @@ public class NetworkUtil {
                 }
                 result = response.toString();
             } else {
-                result = "http is failed.  " + connection.getResponseMessage();
+                result = "network is failed.  " + connection.getResponseMessage();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,7 +125,7 @@ public class NetworkUtil {
                 }
                 result = response.toString();
             } else {
-                result = "http is failed.  " + connection.getResponseMessage();
+                result = "network is failed.  " + connection.getResponseMessage();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -185,7 +183,7 @@ public class NetworkUtil {
                 }
                 result = response.toString();
             } else {
-                result = "http is failed.  " + connection.getResponseMessage();
+                result = "network is failed.  " + connection.getResponseMessage();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -294,7 +292,7 @@ public class NetworkUtil {
                 }
                 result = response.toString();
             } else {
-                result = "http is failed.  " + connection.getResponseMessage();
+                result = "network is failed.  " + connection.getResponseMessage();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -388,7 +386,7 @@ public class NetworkUtil {
                 }
                 result = response.toString();
             } else {
-                result = "http is failed.  " + connection.getResponseMessage();
+                result = "network is failed.  " + connection.getResponseMessage();
             }
         } catch (IOException e) {
             e.printStackTrace();

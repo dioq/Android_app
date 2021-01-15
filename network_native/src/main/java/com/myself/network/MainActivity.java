@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         myRequetPermission();//给权限
 
         //App一启动就配置https证书
-        SSLConfig.set(SSLWhichOne.JustTrustMe, this);
+        SSLConfig.set(SSLTrustWhich.JustTrustMe, this);
     }
 
     private void myRequetPermission() {

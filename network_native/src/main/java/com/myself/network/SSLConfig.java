@@ -24,17 +24,12 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-enum SSLWhichOne {
-    TrustAll,//任信所有证书
-    JustTrustMe//只信任自己服务器的证书
-}
-
 public class SSLConfig {
 
     //服务器绑定的域名
     private static String host = "www.anant.club";
 
-    public static void set(SSLWhichOne type, Activity activity) {
+    public static void set(SSLTrustWhich type, Activity activity) {
         SSLSocketFactory sslSocketFactory = null;
         switch (type) {
             case TrustAll:
