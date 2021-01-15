@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 showResponse("计数器:  ");
             }
-        }, 1000, 1000);
+        }, 5 * 1000, 2 * 1000);
+        //delay 延迟    period 周期
     }
 
     private void showResponse(final String response) {
