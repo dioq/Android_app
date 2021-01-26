@@ -12,6 +12,9 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.TextView;
 
+import com.myself.network.SSL.SSLConfig;
+import com.myself.network.SSL.SSLTrustWhich;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         show_board = findViewById(R.id.tvId);
         myRequetPermission();//给权限
 
-        //App一启动就配置https证书
-        SSLConfig.set(SSLTrustWhich.JustTrustMe, this);
+        //App一启动就配置https证书(也可以每次发送网络请求时配置)
+//        SSLConfig.set(SSLTrustWhich.TrustAll, this);
     }
 
     private void myRequetPermission() {
@@ -126,9 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 params.put("area", "guiyang");
                 params.put("age", "19");
                 params.put("action", "this is a action");
-                String requestData = NetworkUtil.getInstance().getParams(params);
-                System.out.println("requestData :\n" + requestData);
-                String response = NetworkUtil.getInstance().submitForm(urlStr, requestData);
+                String response = NetworkUtil.getInstance().submitForm(urlStr, params);
                 System.out.println("response:\n" + response);
                 showResponse(response);
             }
@@ -139,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {//只能在子线程中请求
             @Override
             public void run() {
+                SSLConfig.set(SSLTrustWhich.TrustAll, MainActivity.this);
+
                 String urlStr = "https://www.anant.club:8081/getssl";
                 String response = NetworkUtil.getInstance().doGet(urlStr);
                 System.out.println("get_tls_func response:\n" + response);
@@ -152,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void run() {
+                SSLConfig.set(SSLTrustWhich.TrustAll, MainActivity.this);
+
                 String urlStr = "https://www.anant.club:8081/postssl";
                 JSONObject param_json = new JSONObject();
                 try {
@@ -165,6 +170,20 @@ public class MainActivity extends AppCompatActivity {
                 String requestData = param_json.toString();
                 String response = NetworkUtil.getInstance().doPost(urlStr, requestData);
                 System.out.println("post_tls_func response:\n" + response);
+                showResponse(response);
+            }
+        }).start();
+    }
+
+    public void get_tls_twoway_func(View view) {
+        new Thread(new Runnable() {//只能在子线程中请求
+            @Override
+            public void run() {
+                SSLConfig.set(SSLTrustWhich.TrustMeTwoway, MainActivity.this);
+
+                String urlStr = "https://134.175.224.245:8093/getdata";
+                String response = NetworkUtil.getInstance().doGet(urlStr);
+                System.out.println("get_tls_twoway_func response:\n" + response);
                 showResponse(response);
             }
         }).start();

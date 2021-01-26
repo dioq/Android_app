@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -50,8 +51,8 @@ public class NetworkUtil {
             } else {
                 connection = (HttpURLConnection) url.openConnection();
             }
-            connection.setConnectTimeout(8000);//连接最大时间
-            connection.setReadTimeout(8000);//读取最大时间
+            connection.setConnectTimeout(15 * 1000);//连接最大时间
+            connection.setReadTimeout(15 * 1000);//读取最大时间
             connection.setRequestMethod("GET");
             //处理返回信息
             if (connection.getResponseCode() == 200) {
@@ -202,13 +203,13 @@ public class NetworkUtil {
         return result;
     }
 
-    //将参数 处理成form表单的特定格式
-    public String getParams(HashMap<String, String> paramsMap) {
+    public String submitForm(String urlStr, Map<String, String> paramsMap) {
         String result = "";
         for (HashMap.Entry<String, String> entity : paramsMap.entrySet()) {
             result += "&" + entity.getKey() + "=" + entity.getValue();
         }
-        return result.substring(1);
+        result = result.substring(1);
+        return submitForm(urlStr, result);
     }
 
 
