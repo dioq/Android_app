@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {//只能在子线程中请求
             @Override
             public void run() {
-                String response = NetworkUtil.getInstance().doGet("http://www.anant.club:8848/getTest");
+                String response = NetworkUtil.getInstance().doGet("http://www.anant.club:8081/getdata");
                 System.out.println("response:\n" + response);
                 showResponse(response);
             }
@@ -61,13 +61,11 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void run() {
-                String urlStr = "http://www.anant.club:8848/getPost";
+                String urlStr = "http://www.anant.club:8081/postdata";
                 JSONObject param_json = new JSONObject();
                 try {
-                    param_json.put("username", "Dio");
-                    param_json.put("password", "13131313");
-                    param_json.put("argot", "You are geat!");
-                    param_json.put("num", 1111);
+                    param_json.put("name", "JOJO");
+                    param_json.put("age", 30);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -85,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             myRequetPermission();
             return;
         }
-        final String urlStr = "http://103.100.211.187:8848/upload";
+        final String urlStr = "http://www.anant.club:8081/upload";
         File dataDir = Environment.getExternalStorageDirectory();
         String path = dataDir.getPath() + File.separator + "Pictures" + File.separator;
         final String imgPath = path + "test.jpg";
@@ -123,12 +121,10 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void run() {
-                String urlStr = "http://www.anant.club:8848/testFormdata";//接口地址
+                String urlStr = "http://www.anant.club:8081/formdata";//接口地址
                 HashMap<String, String> params = new HashMap<>();
-                params.put("username", "dio");
-                params.put("area", "guiyang");
-                params.put("age", "19");
-                params.put("action", "this is a action");
+                params.put("name", "Dio");
+                params.put("age", "21");
                 String response = NetworkUtil.getInstance().submitForm(urlStr, params);
                 System.out.println("response:\n" + response);
                 showResponse(response);
@@ -142,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 SSLConfig.set(SSLTrustWhich.TrustAll, MainActivity.this);
 
-                String urlStr = "https://www.anant.club:8081/getssl";
+                String urlStr = "https://www.anant.club:8082/getdata";
                 String response = NetworkUtil.getInstance().doGet(urlStr);
                 System.out.println("get_tls_func response:\n" + response);
                 showResponse(response);
@@ -155,15 +151,13 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void run() {
-                SSLConfig.set(SSLTrustWhich.TrustAll, MainActivity.this);
+                SSLConfig.set(SSLTrustWhich.TrustMeOneway, MainActivity.this);
 
-                String urlStr = "https://www.anant.club:8081/postssl";
+                String urlStr = "https://www.anant.club:8082/postdata";
                 JSONObject param_json = new JSONObject();
                 try {
-                    param_json.put("username", "Dio");
-                    param_json.put("password", "13131313");
-                    param_json.put("argot", "You are geat!");
-                    param_json.put("num", 1111);
+                    param_json.put("name", "JOJO");
+                    param_json.put("age", 18);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -181,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 SSLConfig.set(SSLTrustWhich.TrustMeTwoway, MainActivity.this);
 
-                String urlStr = "https://134.175.224.245:8093/getdata";
+                String urlStr = "https://www.anant.club:8083/getdata";
                 String response = NetworkUtil.getInstance().doGet(urlStr);
                 System.out.println("get_tls_twoway_func response:\n" + response);
                 showResponse(response);

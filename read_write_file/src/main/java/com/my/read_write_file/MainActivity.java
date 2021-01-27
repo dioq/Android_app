@@ -25,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
         fileUtils = new FileUtils();
         show_board = findViewById(R.id.tvId);
 
+        myRequetPermission();
+    }
+
+    // 获取权限
+    private void myRequetPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_EXTERNAL_STORAGE);
         }
@@ -32,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void read_txt(View view) {
         String path = "Pictures/text_001.txt";
-        String result = fileUtils.loadFromSDFile(path);
+        String result = fileUtils.readFromSDFile(path);
         show_board.setText(result);
     }
 

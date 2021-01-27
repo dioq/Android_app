@@ -261,7 +261,7 @@ public class NetworkUtil {
             //---------------> 文件头描述信息
             bos.write(("--" + BOUNDARY).getBytes());//数据以--BOUNDARY开始
             bos.write(NewLine.getBytes());//换行
-            String name = "file";//后台服务器根据这个名取到Request
+            String name = "file";//后台服务器根据这个名取到 文件所对应的二进制数据
             String content = String.format("Content-Disposition: form-data; name=%s; filename=%s", name, file.getName());
             bos.write(content.getBytes());
             bos.write(NewLine.getBytes());//换行

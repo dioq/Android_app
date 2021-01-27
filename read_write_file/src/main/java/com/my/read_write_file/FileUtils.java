@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 public class FileUtils {
 
     //读取本地文本里的数据
-    String loadFromSDFile(String fname) {
+    String readFromSDFile(String fname) {
         String result = null;
         try {
             File dataDir = Environment.getExternalStorageDirectory();
