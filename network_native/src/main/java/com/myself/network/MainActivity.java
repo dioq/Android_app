@@ -9,6 +9,7 @@ import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         show_board = findViewById(R.id.tvId);
         myRequetPermission();//给权限
-
         //App一启动就配置https证书(也可以每次发送网络请求时配置)
 //        SSLConfig.set(SSLTrustWhich.TrustAll, this);
     }
