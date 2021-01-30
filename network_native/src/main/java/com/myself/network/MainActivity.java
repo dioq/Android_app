@@ -9,7 +9,6 @@ import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         show_board = findViewById(R.id.tvId);
         myRequetPermission();//给权限
-        //App一启动就配置https证书(也可以每次发送网络请求时配置)
-//        SSLConfig.set(SSLTrustWhich.TrustAll, this);
     }
 
     private void myRequetPermission() {
@@ -136,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {//只能在子线程中请求
             @Override
             public void run() {
-                SSLConfig.set(SSLTrustWhich.TrustAll, MainActivity.this);
+                SSLConfig.set(SSLTrustWhich.TrustAll);
 
                 String urlStr = "https://www.anant.club:8082/getdata";
                 String response = NetworkUtil.getInstance().doGet(urlStr);
@@ -151,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void run() {
-                SSLConfig.set(SSLTrustWhich.TrustMeOneway, MainActivity.this);
+                SSLConfig.set(SSLTrustWhich.TrustMeOneway);
 
                 String urlStr = "https://www.anant.club:8082/postdata";
                 JSONObject param_json = new JSONObject();
@@ -173,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {//只能在子线程中请求
             @Override
             public void run() {
-                SSLConfig.set(SSLTrustWhich.TrustMeTwoway, MainActivity.this);
+                SSLConfig.set(SSLTrustWhich.TrustMeTwoway);
 
                 String urlStr = "https://www.anant.club:8083/getdata";
                 String response = NetworkUtil.getInstance().doGet(urlStr);

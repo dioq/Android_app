@@ -1,12 +1,6 @@
 package com.myself.network.SSL;
 
-import com.myself.network.util.MyApplication;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
+import com.myself.network.utils.MyApplication;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +12,13 @@ import java.security.SecureRandom;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
-class CertificateManagers {
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+
+public class CertificateManagers {
 
     private static final String KEY_STORE_TYPE_BKS = "bks";//证书类型 固定值(Android 端用bks类型)
     private static final String KEY_STORE_TYPE_P12 = "PKCS12";//证书类型 固定值
@@ -57,7 +57,7 @@ class CertificateManagers {
         return trustManagers;
     }
 
-    static SSLContext getSSLContext(SSLTrustWhich selectType) throws KeyManagementException, NoSuchAlgorithmException, CertificateException, KeyStoreException, IOException, UnrecoverableKeyException {
+    public static SSLContext getSSLContext(SSLTrustWhich selectType) throws KeyManagementException, NoSuchAlgorithmException, CertificateException, KeyStoreException, IOException, UnrecoverableKeyException {
         KeyManager[] keyManagers = null;
         TrustManager[] trustManagers = null;
         switch (selectType) {

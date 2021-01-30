@@ -24,6 +24,13 @@
         android:onClick="request_func"
         android:text="GET_request" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="get_tls_twoway_func"
+        android:text="GET TLS two-way"
+        tools:ignore="OnClick" />
+
     <!--呈现内容-->
     <ScrollView
         android:layout_width="match_parent"
