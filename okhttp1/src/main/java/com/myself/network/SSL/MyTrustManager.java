@@ -25,6 +25,7 @@ public class MyTrustManager implements X509TrustManager {
 
     @Override
     public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        System.out.println("------------- go here 11 --------------");
         if (chain == null) {
             throw new CertificateException("checkServerTrusted: X509Certificate array is null");
         }
@@ -45,7 +46,6 @@ public class MyTrustManager implements X509TrustManager {
         } catch (NoSuchAlgorithmException | KeyStoreException e) {
             e.printStackTrace();
         }
-
         //获取本地证书中的信息
         String clientEncoded = "";
         String clientSubject = "";
@@ -77,6 +77,7 @@ public class MyTrustManager implements X509TrustManager {
         if (!clientIssUser.equals(issuser)) {
             throw new CertificateException("server's issuser is not equals to client's issuser");
         }
+        System.out.println("------------- go here --------------");
     }
 
     @Override
