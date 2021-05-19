@@ -6,7 +6,7 @@ import android.content.Context;
 
 /**
  * 编写自己的Application，管理全局状态信息，比如Context
- * 要在 AndroidManifest.xml 引入android:name="com.myself.network.util.MyApplication"
+ * 要在 AndroidManifest.xml 引入android:name=".MyApplication"
  * 系统会自动初始化 MyApplication
  */
 public class MyApplication extends Application {
