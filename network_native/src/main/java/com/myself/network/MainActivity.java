@@ -180,6 +180,28 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    public void post_tls_twoway_func(View view) {
+        new Thread(new Runnable() {//只能在子线程中请求
+            @Override
+            public void run() {
+                SSLConfig.set(SSLTrustWhich.TrustMeTwoway);
+
+                String urlStr = "https://jobs8.cn:8083/postdata";
+                JSONObject param_json = new JSONObject();
+                try {
+                    param_json.put("name", "Leo");
+                    param_json.put("age", 30);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String requestData = param_json.toString();
+                String response = NetworkUtil.getInstance().doPost(urlStr, requestData);
+                System.out.println("post_tls_twoway_func response:\n" + response);
+                showResponse(response);
+            }
+        }).start();
+    }
+
     private void showResponse(final String response) {
         runOnUiThread(new Runnable() {
             @Override

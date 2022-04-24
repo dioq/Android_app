@@ -80,6 +80,13 @@
                 android:onClick="get_tls_twoway_func"
                 android:text="GET TLS two-way"
                 tools:ignore="OnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="post_tls_twoway_func"
+                android:text="POST TLS two-way"
+                tools:ignore="OnClick" />
         </LinearLayout>
 
     </LinearLayout>
