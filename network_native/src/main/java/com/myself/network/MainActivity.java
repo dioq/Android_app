@@ -144,6 +144,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void post_tls_func(View view) {
+        new Thread(new Runnable() {//只能在子线程中请求
+            @Override
+            public void run() {
+                SSLConfig.set(SSLTrustWhich.TrustAll);
+
+                String urlStr = "https://jobs8.cn:8082/postdata";
+                JSONObject param_json = new JSONObject();
+                try {
+                    param_json.put("name", "JOJO");
+                    param_json.put("age", 18);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String requestData = param_json.toString();
+                String response = NetworkUtil.getInstance().doPost(urlStr, requestData);
+                System.out.println("post_tls_func response:\n" + response);
+                showResponse(response);
+            }
+        }).start();
+    }
+
+    public void get_sslping_tls_func(View view) {
+        new Thread(new Runnable() {//只能在子线程中请求
+            @Override
+            public void run() {
+                SSLConfig.set(SSLTrustWhich.TrustMeOneway);
+
+                String urlStr = "https://jobs8.cn:8082/getdata";
+                String response = NetworkUtil.getInstance().doGet(urlStr);
+                System.out.println("get_sslping_tls_func response:\n" + response);
+                showResponse(response);
+            }
+        }).start();
+    }
+
+    public void post_sslping_tls_func(View view) {
         new Thread(new Runnable() {//开启线程
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -160,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String requestData = param_json.toString();
                 String response = NetworkUtil.getInstance().doPost(urlStr, requestData);
-                System.out.println("post_tls_func response:\n" + response);
+                System.out.println("post_sslping_tls_func response:\n" + response);
                 showResponse(response);
             }
         }).start();

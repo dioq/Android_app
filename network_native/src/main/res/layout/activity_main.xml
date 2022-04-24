@@ -77,6 +77,20 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="get_sslping_tls_func"
+                android:text="GET SSLPIng TLS"
+                tools:ignore="OnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="post_sslping_tls_func"
+                android:text="POST SSLPing TLS"
+                tools:ignore="OnClick" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="get_tls_twoway_func"
                 android:text="GET TLS two-way"
                 tools:ignore="OnClick" />
