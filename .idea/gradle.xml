@@ -43,6 +43,7 @@
             <option value="$PROJECT_DIR$/read_write_file" />
             <option value="$PROJECT_DIR$/retrofit_1" />
             <option value="$PROJECT_DIR$/scaledpixels" />
+            <option value="$PROJECT_DIR$/sensor01" />
             <option value="$PROJECT_DIR$/service1" />
             <option value="$PROJECT_DIR$/service_bindservice" />
             <option value="$PROJECT_DIR$/service_startservice" />
@@ -56,7 +57,6 @@
             <option value="$PROJECT_DIR$/webview01" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
