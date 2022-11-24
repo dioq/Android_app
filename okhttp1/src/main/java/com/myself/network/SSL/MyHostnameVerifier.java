@@ -6,7 +6,7 @@ import javax.net.ssl.SSLSession;
 public class MyHostnameVerifier implements HostnameVerifier {
 
     //服务器绑定的域名
-    private static String host = "jobs8.cn";
+    private static String host = "www.anant.club";
 
     @Override
     public boolean verify(String hostname, SSLSession session) {

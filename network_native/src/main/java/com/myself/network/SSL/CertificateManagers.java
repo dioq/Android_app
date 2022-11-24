@@ -20,8 +20,6 @@ import java.security.cert.CertificateException;
 
 class CertificateManagers {
 
-    private static final String KEY_STORE_TYPE_BKS = "bks";//证书类型 固定值(Android 端用bks类型)
-
     private static final String CLIENT_CERT = "client.p12";//客户端证书
     private static final String CLIENT_CERT_PASSWORD = "zxcvbnm,.";// 客户端证书密码
     private static final String SERVER_CERT = "server.bks";//服务端证书
