@@ -34,8 +34,8 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="sumitForm_func"
-                android:text="提交form表单"
+                android:onClick="post2_func"
+                android:text="post 2"
                 tools:ignore="OnClick" />
 
             <Button

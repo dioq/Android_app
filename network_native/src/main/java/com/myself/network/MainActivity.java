@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {//只能在子线程中请求
             @Override
             public void run() {
-                String response = NetworkUtil.getInstance().doGet("http://jobs8.cn:8081/getdata");
+                String response = NetworkUtil.getInstance().doGet("http://jobs8.cn:8090/get?name=dio&age=100");
                 System.out.println("response:\n" + response);
                 showResponse(response);
             }
@@ -58,7 +58,28 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void run() {
-                String urlStr = "http://jobs8.cn:8081/postdata";
+                String urlStr = "http://jobs8.cn:8090/post";
+                JSONObject param_json = new JSONObject();
+                try {
+                    param_json.put("name", "JOJO");
+                    param_json.put("age", 30);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String requestData = param_json.toString();
+                String response = NetworkUtil.getInstance().doPost(urlStr, requestData);
+                System.out.println("response:\n" + response);
+                showResponse(response);
+            }
+        }).start();
+    }
+
+    public void post2_func(View view) {
+        new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void run() {
+                String urlStr = "http://jobs8.cn:8090/post?name=JOJO&age=18";
                 JSONObject param_json = new JSONObject();
                 try {
                     param_json.put("name", "JOJO");
@@ -80,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             myRequetPermission();
             return;
         }
-        final String urlStr = "http://jobs8.cn:8081/upload";
+        final String urlStr = "http://jobs8.cn:8090/upload";
         File dataDir = Environment.getExternalStorageDirectory();
         String path = dataDir.getPath() + File.separator + "Pictures" + File.separator;
         final String imgPath = path + "test.png";
@@ -113,29 +134,13 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void sumitForm_func(View view) {
-        new Thread(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void run() {
-                String urlStr = "http://jobs8.cn:8081/formdata";//接口地址
-                HashMap<String, String> params = new HashMap<>();
-                params.put("name", "Dio");
-                params.put("age", "21");
-                String response = NetworkUtil.getInstance().submitForm(urlStr, params);
-                System.out.println("response:\n" + response);
-                showResponse(response);
-            }
-        }).start();
-    }
-
     public void get_tls_func(View view) {
         new Thread(new Runnable() {//只能在子线程中请求
             @Override
             public void run() {
                 SSLConfig.set(SSLTrustWhich.TrustAll);
 
-                String urlStr = "https://jobs8.cn:8082/getdata";
+                String urlStr = "https://jobs8.cn:8091/get";
                 String response = NetworkUtil.getInstance().doGet(urlStr);
                 System.out.println("get_tls_func response:\n" + response);
                 showResponse(response);
@@ -149,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 SSLConfig.set(SSLTrustWhich.TrustAll);
 
-                String urlStr = "https://jobs8.cn:8082/postdata";
+                String urlStr = "https://jobs8.cn:8091/post";
                 JSONObject param_json = new JSONObject();
                 try {
                     param_json.put("name", "JOJO");
@@ -171,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 SSLConfig.set(SSLTrustWhich.TrustMeOneway);
 
-                String urlStr = "https://jobs8.cn:8082/getdata";
+                String urlStr = "https://jobs8.cn:8091/get";
                 String response = NetworkUtil.getInstance().doGet(urlStr);
                 System.out.println("get_sslping_tls_func response:\n" + response);
                 showResponse(response);
@@ -186,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 SSLConfig.set(SSLTrustWhich.TrustMeOneway);
 
-                String urlStr = "https://jobs8.cn:8082/postdata";
+                String urlStr = "https://jobs8.cn:8091/post";
                 JSONObject param_json = new JSONObject();
                 try {
                     param_json.put("name", "JOJO");
@@ -208,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 SSLConfig.set(SSLTrustWhich.TrustMeTwoway);
 
-                String urlStr = "https://jobs8.cn:8083/getdata";
+                String urlStr = "https://jobs8.cn:8092/get";
                 String response = NetworkUtil.getInstance().doGet(urlStr);
                 System.out.println("get_tls_twoway_func response:\n" + response);
                 showResponse(response);
@@ -222,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 SSLConfig.set(SSLTrustWhich.TrustMeTwoway);
 
-                String urlStr = "https://jobs8.cn:8083/postdata";
+                String urlStr = "https://jobs8.cn:8092/post";
                 JSONObject param_json = new JSONObject();
                 try {
                     param_json.put("name", "Leo");
