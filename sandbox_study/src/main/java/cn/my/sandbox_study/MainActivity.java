@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         Environment.getDataDirectory() = /data
         Environment.getDownloadCacheDirectory() = /cache
-        Environment.getExternalStorageDirectory() = /mnt/sdcard
+        Environment.getExternalStorageDirectory() = /storage/emulated/0
         Environment.getExternalStoragePublicDirectory(“test”) = /mnt/sdcard/test
         Environment.getRootDirectory() = /system
         getPackageCodePath() = /data/app/com.my.app-1.apk
