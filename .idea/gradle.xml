@@ -42,6 +42,7 @@
             <option value="$PROJECT_DIR$/proxy_local" />
             <option value="$PROJECT_DIR$/radio" />
             <option value="$PROJECT_DIR$/read_write_file" />
+            <option value="$PROJECT_DIR$/resource_manager" />
             <option value="$PROJECT_DIR$/retrofit_1" />
             <option value="$PROJECT_DIR$/sandbox_study" />
             <option value="$PROJECT_DIR$/scaledpixels" />
@@ -50,6 +51,7 @@
             <option value="$PROJECT_DIR$/service_bindservice" />
             <option value="$PROJECT_DIR$/service_startservice" />
             <option value="$PROJECT_DIR$/sharedpreferences1" />
+            <option value="$PROJECT_DIR$/source_manager" />
             <option value="$PROJECT_DIR$/tabdemo" />
             <option value="$PROJECT_DIR$/thread1" />
             <option value="$PROJECT_DIR$/timertask01" />

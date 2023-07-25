@@ -1,0 +1,16 @@
+{
+  "target_pkgname": "com.my.load",
+  "inject": [
+    "libhook.so"
+  ],
+  "dependencies": [
+    {
+      "src_path": "/data/local/tmp/libhook.so",
+      "dst_path": "libhook.so"
+    },
+    {
+      "src_path": "/data/local/tmp/libhook.config.so",
+      "dst_path": "libhook.config.so"
+    }
+  ]
+}

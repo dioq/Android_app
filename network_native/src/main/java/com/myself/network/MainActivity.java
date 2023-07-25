@@ -19,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.HashMap;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 

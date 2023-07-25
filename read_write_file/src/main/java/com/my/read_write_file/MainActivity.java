@@ -6,15 +6,11 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
-import java.io.File;
-import java.io.FileOutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
