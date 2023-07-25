@@ -27,9 +27,10 @@ public class FileUtils {
             if (!f.exists()) {
                 return null;
             }
-            int length = (int) f.length();
-            byte[] buff = new byte[length];
+
             FileInputStream fin = new FileInputStream(f);
+            int length = fin.available();
+            byte[] buff = new byte[length];
             fin.read(buff);
             fin.close();
             result = new String(buff, StandardCharsets.UTF_8);
