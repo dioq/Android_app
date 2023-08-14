@@ -37,20 +37,27 @@ public class MainActivity extends AppCompatActivity {
         Context context = MainActivity.this;
 //        Object shared_prefs_file = context.getSharedPreferences("login_status",0);
 //        Log.d(TAG,"getSharedPreferences:" + shared_prefs_file);
-
+        String log = "";
         File filesDir_file = context.getFilesDir();
-        Log.d(TAG, "context.getFilesDir():" + filesDir_file.getPath());
+        String filesDir = "context.getFilesDir():" + filesDir_file.getPath();
+        Log.d(TAG, filesDir);
+        log += filesDir + "\n";
 
         File cache_file = context.getCacheDir();
-        Log.d(TAG, "context.getCacheDir():" + cache_file.getPath());
+        String cacheDir = "context.getCacheDir():" + cache_file.getPath();
+        Log.d(TAG, cacheDir);
+        log += cacheDir + "\n";
 
         File databases_file = context.getDatabasePath("msg.db");
-        Log.d(TAG, "context.getDatabasePath():" + databases_file.getPath());
+        String databasePath = "context.getDatabasePath():" + databases_file.getPath();
+        Log.d(TAG, databasePath);
+        log += databasePath + "\n";
+
+        showResponse(log);
     }
 
     /*
     外部存储:必须申请权限
-
         Environment.getDataDirectory() = /data
         Environment.getDownloadCacheDirectory() = /cache
         Environment.getExternalStorageDirectory() = /storage/emulated/0
@@ -67,32 +74,40 @@ public class MainActivity extends AppCompatActivity {
         getFilesDir() = /data/data/com.my.app/files
     * */
     public void external_store(View view) {
+        String log = "";
         File external_file = Environment.getExternalStorageDirectory();
-        Log.d(TAG, "getExternalStorageDirectory():" + external_file.getPath());
+        String storageDirectory = "getExternalStorageDirectory():" + external_file.getPath();
+        Log.d(TAG, storageDirectory);
+        log += storageDirectory + "\n";
 
         File rootDirectory = Environment.getRootDirectory();
-        Log.d(TAG, "getRootDirectory():" + rootDirectory.getPath());
+        String rootDirectoryStr = "getRootDirectory():" + rootDirectory.getPath();
+        Log.d(TAG, rootDirectoryStr);
+        log += rootDirectoryStr + "\n";
 
         File dataDirectory = Environment.getDataDirectory();
-        Log.d(TAG, "getDataDirectory():" + dataDirectory.getPath());
+        String dataDirectoryStr = "getDataDirectory():" + dataDirectory.getPath();
+        Log.d(TAG, dataDirectoryStr);
+        log += dataDirectoryStr + "\n";
 
         Context context = MainActivity.this;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 || !Environment.isExternalStorageRemovable()) {
             File cacheDir = context.getExternalCacheDir();
-            Log.d(TAG, "context.getExternalCacheDir():" + cacheDir.getPath());
+            String cacheDirStr = "context.getExternalCacheDir():" + cacheDir.getPath();
+            Log.d(TAG, cacheDirStr);
+            log += cacheDirStr + "\n";
         }
+        showResponse(log);
     }
 
     public void program_path(View view) {
         Context context = MainActivity.this;
-
-        // 获取当前程序路径  /data/user/0/pkgname/files
-        File filesDir = context.getFilesDir();
-        Log.d(TAG, "getFilesDir():" + filesDir.getAbsolutePath());
         // 获取该程序的安装包路径  /data/app/xxx
         String packageResourcePath = context.getPackageResourcePath();
-        Log.d(TAG, "getPackageResourcePath():" + packageResourcePath);
+        String packageResourcePathStr = "getPackageResourcePath():\n" + packageResourcePath;
+        Log.d(TAG, packageResourcePathStr);
+        showResponse(packageResourcePathStr);
     }
 
     private void showResponse(final String response) {
