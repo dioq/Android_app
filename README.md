@@ -1,2 +1,3 @@
-# MyAndroid
- Android 学习笔记
+# Android App
+
+Android App 开发笔记
