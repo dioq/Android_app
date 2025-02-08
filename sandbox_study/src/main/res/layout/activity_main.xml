@@ -32,6 +32,13 @@
             android:text="程序和安装包路径"
             tools:ignore="OnClick" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="global_dir"
+            android:text="全局目录"
+            tools:ignore="OnClick" />
+
     </LinearLayout>
 
 

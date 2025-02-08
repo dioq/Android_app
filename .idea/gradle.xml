@@ -4,6 +4,7 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="jbr-17" />
         <option name="modules">
@@ -28,7 +29,6 @@
             <option value="$PROJECT_DIR$/listview2" />
             <option value="$PROJECT_DIR$/listview3" />
             <option value="$PROJECT_DIR$/log_handler" />
-            <option value="$PROJECT_DIR$/message" />
             <option value="$PROJECT_DIR$/network_native" />
             <option value="$PROJECT_DIR$/okhttp1" />
             <option value="$PROJECT_DIR$/okhttp_util" />

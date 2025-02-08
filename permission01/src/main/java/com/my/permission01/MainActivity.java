@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+    }
+
+    public void test1(View view) {
         //app打开就请求权限
         myRequetPermission();
     }
@@ -46,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1) {
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PERMISSION_GRANTED) {//选择了“始终允许”
-                    Toast.makeText(this, "" + "权限" + permissions[i] + "申请成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "权限" + permissions[i] + "申请成功", Toast.LENGTH_SHORT).show();
                 } else {
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {//用户选择了禁止不再询问
 
@@ -98,5 +103,9 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == NOT_NOTICE) {
             myRequetPermission();//由于不知道是否选择了允许所以需要再次判断
         }
+    }
+
+    public void test2(View view) {
+        PermissionUtils.getInstance().requestPermissions(MainActivity.this);
     }
 }

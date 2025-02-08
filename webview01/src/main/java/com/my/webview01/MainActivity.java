@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void load_webview(View view) {
-        webView.loadUrl("https://cn.bing.com/");
+        webView.loadUrl("https://www.baidu.com/");
     }
 
     public void refresh_webview(View view) {

@@ -13,7 +13,7 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String TAG = "sandbox_files";
+    private final String TAG = "dlog";
 
     TextView show_board;
 
@@ -37,23 +37,17 @@ public class MainActivity extends AppCompatActivity {
         Context context = MainActivity.this;
 //        Object shared_prefs_file = context.getSharedPreferences("login_status",0);
 //        Log.d(TAG,"getSharedPreferences:" + shared_prefs_file);
-        String log = "";
         File filesDir_file = context.getFilesDir();
         String filesDir = "context.getFilesDir():" + filesDir_file.getPath();
         Log.d(TAG, filesDir);
-        log += filesDir + "\n";
 
         File cache_file = context.getCacheDir();
         String cacheDir = "context.getCacheDir():" + cache_file.getPath();
         Log.d(TAG, cacheDir);
-        log += cacheDir + "\n";
 
         File databases_file = context.getDatabasePath("msg.db");
         String databasePath = "context.getDatabasePath():" + databases_file.getPath();
         Log.d(TAG, databasePath);
-        log += databasePath + "\n";
-
-        showResponse(log);
     }
 
     /*
@@ -108,6 +102,25 @@ public class MainActivity extends AppCompatActivity {
         String packageResourcePathStr = "getPackageResourcePath():\n" + packageResourcePath;
         Log.d(TAG, packageResourcePathStr);
         showResponse(packageResourcePathStr);
+    }
+
+    public void global_dir(View view) {
+        // /data/local/tmp/ 目录 Android app 自由读写权限,不能创建文件
+        String dir1 = "/data/local/tmp/";
+        String str = "Hello, this is a test message!";
+        String path = dir1 + "text.txt";
+        Log.d(TAG, "path:" + path);
+//        File file = new File(path);
+//        try {
+//            file.createNewFile();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        FileUtils.getInstance().writeFile(path, str.getBytes());
+
+        byte[] bytes = FileUtils.getInstance().readFile(path);
+        Log.d(TAG, "content:" + new String(bytes));
     }
 
     private void showResponse(final String response) {

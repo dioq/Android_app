@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void read_txt(View view) {
-        String path = "serveraddr.txt";
+        String path = "Download/1.txt";
         String result = fileUtils.readFromSDFile(path);
         show_board.setText(result);
     }
