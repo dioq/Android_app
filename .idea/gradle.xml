@@ -32,7 +32,6 @@
             <option value="$PROJECT_DIR$/network_native" />
             <option value="$PROJECT_DIR$/okhttp1" />
             <option value="$PROJECT_DIR$/okhttp_util" />
-            <option value="$PROJECT_DIR$/package_install" />
             <option value="$PROJECT_DIR$/permission01" />
             <option value="$PROJECT_DIR$/phone" />
             <option value="$PROJECT_DIR$/photograph" />
@@ -40,7 +39,6 @@
             <option value="$PROJECT_DIR$/proxy_local" />
             <option value="$PROJECT_DIR$/radio" />
             <option value="$PROJECT_DIR$/read_write_file" />
-            <option value="$PROJECT_DIR$/resource_manager" />
             <option value="$PROJECT_DIR$/retrofit_1" />
             <option value="$PROJECT_DIR$/sandbox_study" />
             <option value="$PROJECT_DIR$/scaledpixels" />

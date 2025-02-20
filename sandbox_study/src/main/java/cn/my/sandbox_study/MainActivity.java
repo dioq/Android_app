@@ -15,13 +15,17 @@ public class MainActivity extends AppCompatActivity {
 
     private final String TAG = "dlog";
 
-    TextView show_board;
+    TextView tv;
+
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        show_board = findViewById(R.id.tvId);
+        tv = findViewById(R.id.tvId);
+
+        context = MainActivity.this;
     }
 
     /*
@@ -96,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void program_path(View view) {
-        Context context = MainActivity.this;
         // 获取该程序的安装包路径  /data/app/xxx
         String packageResourcePath = context.getPackageResourcePath();
         String packageResourcePathStr = "getPackageResourcePath():\n" + packageResourcePath;
@@ -127,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                show_board.setText(response);//设置TextView的内容
+                tv.setText(response);//设置TextView的内容
             }
         });
     }
